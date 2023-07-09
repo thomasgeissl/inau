@@ -1,7 +1,8 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import styled from "@emotion/styled";
 import { Question as QuestionType } from "../../types/Question";
 import useStore from "../../stores/client";
+import { useState } from "react";
 
 interface QuestionProps {
   question: QuestionType;
@@ -11,6 +12,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const ImageContainer = styled.div`
+text-align: center;
+img{
+  max-width: 80%;;
+}
+`;
 const Actions = styled.div``;
 const Text = styled.div`
   display: flex;
@@ -18,8 +25,10 @@ const Text = styled.div`
 `;
 const Question: React.FC<QuestionProps> = ({ question }) => {
   const respond = useStore((state) => state.respond);
+  const [text, setText] = useState("")
   return (
     <Container>
+      {question.img && <ImageContainer><img src={question.img}></img></ImageContainer>}
       <Text>{question?.text}</Text>
       <Actions>
         {question?.type === "RATING" && (
@@ -56,6 +65,12 @@ const Question: React.FC<QuestionProps> = ({ question }) => {
             >
               {question?.labelNo}
             </Button>
+          </>
+        )}
+        {question?.type === "TEXT" && (
+          <>
+          <TextField value={text} onChange={(event)=>setText(event.target.value)}></TextField>
+          <Button onClick={()=>respond(text)}>send</Button>
           </>
         )}
       </Actions>

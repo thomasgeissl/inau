@@ -64,6 +64,13 @@ const useStore = create<ControlState>()(
           labelMax: "fully agree",
           labelMin: "fully disagree",
         },
+        {
+          uuid: v4(),
+          type: "TEXT",
+          img:"https://cataas.com/cat/says/test",
+          text: "name one adjective that describes the image!",
+          wordCount: 1
+        },
       ],
       responses: {},
       publish: (uuid) => {
