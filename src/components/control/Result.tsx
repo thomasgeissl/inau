@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import useStore from "../../stores/control";
 import { useParams } from "react-router-dom";
+import Header from "./Header";
 
 interface ResultProps {}
 
@@ -14,6 +15,7 @@ const Result: React.FC<ResultProps> = ({}) => {
   }
   return (
     <>
+    <Header></Header>
       {/* TODO: check if uuid is valid */}
       result {uuid}
       <div>{question.text}</div>

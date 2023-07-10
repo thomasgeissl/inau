@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import useStore from "../stores/control";
 import Users from "./control/Users";
 import { Link } from "react-router-dom";
+import Header from "./control/Header";
 
 const Container = styled.ul``;
 interface ControlProps {}

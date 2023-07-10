@@ -15,7 +15,8 @@ const Container = styled.div`
 const ImageContainer = styled.div`
 text-align: center;
 img{
-  max-width: 80%;;
+  max-width: 80%;
+  max-height: 80vh;
 }
 `;
 const Actions = styled.div``;

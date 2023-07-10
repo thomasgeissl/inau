@@ -7,9 +7,16 @@ import Result from "./components/control/Result";
 import styled from "@emotion/styled";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
+import Header from "./components/control/Header";
 
 const Container = styled.div`
-  padding: 16px;
+  width: 100vw;
+  height: 100vh;
+  background-color: #242424;
+  a{
+    color: white;
+    text-decoration: none;
+  }
 `;
 
 const router = createBrowserRouter([
@@ -19,7 +26,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/control",
-    element: <Control></Control>,
+    element: (
+      <>
+        <Header></Header>
+        <Control></Control>,
+      </>
+    ),
   },
   {
     path: "/control/result/:uuid",
