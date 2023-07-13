@@ -6,32 +6,56 @@ import { useState } from "react";
 
 interface QuestionProps {
   question: QuestionType;
+  showActions: boolean;
 }
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
+`;
+const Content = styled.div`
+  flex: 1;
+  padding: 64px;
 `;
 const ImageContainer = styled.div`
-text-align: center;
-img{
-  max-width: 80%;
-  max-height: 80vh;
-}
+  text-align: center;
+  img {
+    max-width: 80%;
+    max-height: 60vh;
+  }
+  margin-bottom: 64px;
 `;
-const Actions = styled.div``;
+const Actions = styled.div`
+  display: flex;
+  gap:24px;
+  padding: 64px;
+  align-items: center;
+  justify-content: center;
+`;
 const Text = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 24px;
+  text-align: center;
+  font-size: 24px;
 `;
-const Question: React.FC<QuestionProps> = ({ question }) => {
+const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
   const respond = useStore((state) => state.respond);
-  const [text, setText] = useState("")
+  const [text, setText] = useState("");
   return (
     <Container>
-      {question.img && <ImageContainer><img src={question.img}></img></ImageContainer>}
-      <Text>{question?.text}</Text>
-      <Actions>
+      <Content>
+        {question.img && (
+          <ImageContainer>
+            <img src={question.img}></img>
+          </ImageContainer>
+        )}
+        <Text>{question?.text}</Text>
+      </Content>
+      {showActions && <Actions>
         {question?.type === "RATING" && (
           <>
             {[0, 1, 2, 3, 4, 5].map((value) => {
@@ -41,6 +65,7 @@ const Question: React.FC<QuestionProps> = ({ question }) => {
                   onClick={() => {
                     respond(value);
                   }}
+                  variant="outlined"
                 >
                   {value}
                 </Button>
@@ -70,11 +95,16 @@ const Question: React.FC<QuestionProps> = ({ question }) => {
         )}
         {question?.type === "TEXT" && (
           <>
-          <TextField value={text} onChange={(event)=>setText(event.target.value)}></TextField>
-          <Button onClick={()=>respond(text)}>send</Button>
+            <TextField
+            fullWidth
+              value={text}
+              onChange={(event) => setText(event.target.value)}
+              sx={{color: "white"}}
+            ></TextField>
+            <Button onClick={() => respond(text)}>send</Button>
           </>
         )}
-      </Actions>
+      </Actions>}
     </Container>
   );
 };

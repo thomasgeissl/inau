@@ -46,6 +46,9 @@ const useStore = create<ClientState>()(
             }
           }
         });
+        setTimeout(()=>{
+          // TODO: send heartbeat
+        }, 10*1000)
       },
       setQuestion: (question) => set((state) => ({ question })),
       respond: (value) => {

@@ -12,12 +12,13 @@ import {
   Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
+import PlayIcon from "@mui/icons-material/PlayCircle";
 
 const MenuContainer = styled.ul`
-padding-left: 0;
-li{
-  display: inline-block;
-}
+  padding-left: 0;
+  li {
+    display: inline-block;
+  }
 `;
 interface HeaderProps {}
 
@@ -32,10 +33,18 @@ const Header: React.FC<HeaderProps> = ({}) => {
         <Toolbar>
           <MenuContainer>
             <MenuItem>
-              <Link to="/control">actions</Link>
+              <Link to="/control/run">
+                <PlayIcon></PlayIcon>
+              </Link>
             </MenuItem>
             <MenuItem>
-              <Link to="/results">results</Link>
+              <Link to="/control/actions">actions</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/control/results">results</Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/control/users">users</Link>
             </MenuItem>
           </MenuContainer>
         </Toolbar>

@@ -15,7 +15,6 @@ const Result: React.FC<ResultProps> = ({}) => {
   }
   return (
     <>
-    <Header></Header>
       {/* TODO: check if uuid is valid */}
       result {uuid}
       <div>{question.text}</div>

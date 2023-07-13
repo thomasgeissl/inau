@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
-import {uniq} from "lodash"
+import { uniq } from "lodash";
 import * as mqtt from "mqtt/dist/mqtt";
 import { Question, QuestionYesNo } from "../types/Question";
 
@@ -30,11 +30,15 @@ interface ControlState {
   uuid: string;
   users: string[];
   questions: Question[];
+  index: number;
   responses: any;
   //   increase: (by: number) => void;
   publish: (uuid: string) => void;
   addUser: (user: any) => void;
   addResponse: (response: any) => void;
+  setIndex: (index: number) => void;
+  next: () => void;
+  previous: () => void;
 }
 
 const useStore = create<ControlState>()(
@@ -67,11 +71,12 @@ const useStore = create<ControlState>()(
         {
           uuid: v4(),
           type: "TEXT",
-          img:"https://cataas.com/cat/says/test",
+          img: "https://cataas.com/cat/says/test",
           text: "name one adjective that describes the image!",
-          wordCount: 1
+          wordCount: 1,
         },
       ],
+      index: 0,
       responses: {},
       publish: (uuid) => {
         const question = get().questions.find((q) => q.uuid === uuid);
@@ -92,6 +97,24 @@ const useStore = create<ControlState>()(
           response,
         ];
         set({ responses });
+      },
+      next: () => {
+        const index = get().index + 1;
+        if (index < get().questions.length) {
+          set({ index });
+          get().publish(get().questions[index].uuid);
+        }
+      },
+      previous: () => {
+        const index = get().index - 1;
+        if (index >= 0) {
+          set({ index });
+          get().publish(get().questions[index].uuid);
+        }
+      },
+      setIndex: (index) => {
+        set({ index });
+        get().publish(get().questions[index].uuid);
       },
     }),
     { name: "control" }
