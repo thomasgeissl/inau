@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import useStore from "../../stores/control";
 import { useParams } from "react-router-dom";
-import _ from "lodash";
+import Header from "./Header";
 
 interface ResultProps {}
 
-const Result: React.FC<ResultProps> = ({}) => {
+const Config: React.FC<ResultProps> = ({}) => {
   const responses = useStore((state) => state.responses);
   const questions = useStore((state) => state.questions);
   const uuid = useParams().uuid ?? "";
@@ -57,56 +57,8 @@ const Result: React.FC<ResultProps> = ({}) => {
           })}
         </div>
       )}
-      {question.type === "MULTIPLE_CHOICE" && (
-        <>
-          {question.numberOfSelections === 1 && (
-            <>
-              {question.options.map((option: any) => {
-                return (
-                  <li key={`option-${option}`}>
-                    {option}:{" "}
-                    {
-                      responses[uuid].filter((o: any) => o.value === option)
-                        .length
-                    }
-                  </li>
-                );
-                responses[uuid];
-              })}
-            </>
-          )}
-          {question.numberOfSelections > 1 && (
-            <>
-              {_.uniq(
-                responses[uuid]
-                  .map((option: any) => {
-                    return option.value;
-                  })
-                  .flat()
-              ).map((option: any) => {
-                // {question.options.map((option: any) => {
-                return (
-                  <li key={`option-${option}`}>
-                    {option}:{" "}
-                    {
-                      // question.options
-                      responses[uuid]
-                      .map((response: any) => response.value)
-                        .flat()
-                        // .map((option: any) => {
-                        //   return option.value;
-                        // })
-                        .filter((o: any) => o === option).length
-                    }
-                  </li>
-                );
-              })}
-            </>
-          )}
-        </>
-      )}
     </>
   );
 };
 
-export default Result;
+export default Config;

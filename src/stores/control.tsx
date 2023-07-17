@@ -75,6 +75,22 @@ const useStore = create<ControlState>()(
           text: "name one adjective that describes the image!",
           wordCount: 1,
         },
+        {
+          uuid: v4(),
+          type: "MULTIPLE_CHOICE",
+          img: "https://cataas.com/cat/says/test",
+          text: "which option fits best.",
+          options: ["hot", "boring", "cute", "decent"],
+          numberOfSelections: 1
+        },
+        {
+          uuid: v4(),
+          type: "MULTIPLE_CHOICE",
+          img: "https://cataas.com/cat/says/test",
+          text: "which option fits best.",
+          options: ["hot", "boring", "cute", "decent"],
+          numberOfSelections: 2
+        },
       ],
       index: 0,
       responses: {},
