@@ -10,6 +10,8 @@ import theme from "./theme";
 import Header from "./components/control/Header";
 import Users from "./components/control/Users";
 import Run from "./components/control/Run";
+import SideBar from "./components/control/SideBar";
+import Config from "./components/control/Config";
 
 const Container = styled.div`
   width: 100vw;
@@ -20,6 +22,7 @@ const Container = styled.div`
     text-decoration: none;
   }
   color: white;
+  display: flex;
 `;
 const Content = styled.div`
   /* margin: 24px; */
@@ -41,18 +44,30 @@ const router = createBrowserRouter([
     path: "/control/run",
     element: (
       <Container>
+        <SideBar></SideBar>
         <Content>
           <Run></Run>
         </Content>
       </Container>
     ),
   },
-
+  {
+    path: "/control/config",
+    element: (
+      <Container>
+        <SideBar></SideBar>
+        <Content>
+          <Config></Config>
+        </Content>
+      </Container>
+    ),
+  },
   {
     path: "/control/actions",
     element: (
       <Container>
-        <Header></Header>
+        {/* <Header></Header> */}
+        <SideBar></SideBar>
         <Content>
           <Actions></Actions>
         </Content>
@@ -63,7 +78,8 @@ const router = createBrowserRouter([
     path: "/control/result/:uuid",
     element: (
       <Container>
-        <Header></Header>
+        {/* <Header></Header> */}
+        <SideBar></SideBar>
         <Content>
           <Result></Result>
         </Content>
@@ -74,7 +90,8 @@ const router = createBrowserRouter([
     path: "/control/users",
     element: (
       <Container>
-        <Header></Header>
+        {/* <Header></Header> */}
+        <SideBar></SideBar>
         <Content>
           <Users></Users>
         </Content>

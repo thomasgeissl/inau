@@ -39,6 +39,9 @@ interface ControlState {
   setIndex: (index: number) => void;
   next: () => void;
   previous: () => void;
+  deleteQuestion: (uuid:string) => void;
+  import: () => void;
+  export: () => void;
 }
 
 const useStore = create<ControlState>()(
@@ -81,7 +84,7 @@ const useStore = create<ControlState>()(
           img: "https://cataas.com/cat/says/test",
           text: "which option fits best.",
           options: ["hot", "boring", "cute", "decent"],
-          numberOfSelections: 1
+          numberOfSelections: 1,
         },
         {
           uuid: v4(),
@@ -89,7 +92,7 @@ const useStore = create<ControlState>()(
           img: "https://cataas.com/cat/says/test",
           text: "which option fits best.",
           options: ["hot", "boring", "cute", "decent"],
-          numberOfSelections: 2
+          numberOfSelections: 2,
         },
       ],
       index: 0,
@@ -127,6 +130,61 @@ const useStore = create<ControlState>()(
           set({ index });
           get().publish(get().questions[index].uuid);
         }
+      },
+      deleteQuestion(uuid) {
+        const questions = get().questions.filter((q) => q.uuid !== uuid);
+        set({ questions });
+      },
+      import: () => {
+        // Create an invisible input element
+        const inputElement = document.createElement("input");
+        inputElement.type = "file";
+        inputElement.accept = ".json";
+        inputElement.style.display = "none";
+
+        // Append the input element to the body
+        document.body.appendChild(inputElement);
+
+        // Function to handle file selection and reading
+        function handleFileUpload(event) {
+          const file = event.target.files[0];
+
+          if (!file) {
+            console.log("No file selected.");
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = function (event) {
+            const jsonContent = event.target.result;
+            try {
+              const jsonData = JSON.parse(jsonContent);
+              // Do whatever you want with the jsonData here
+              set({ questions: jsonData });
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
+            }
+          };
+
+          reader.readAsText(file);
+        }
+
+        // Add event listener to the input element
+        inputElement.addEventListener("change", handleFileUpload);
+
+        // Trigger the file input dialog
+        inputElement.click();
+      },
+      export: () => {
+        const content = JSON.stringify(get().questions);
+        const fileName = "export.json";
+        const contentType = "text/plain";
+        var a = document.createElement("a");
+        var file = new Blob([content], { type: contentType });
+        a.href = URL.createObjectURL(file);
+        a.download = fileName;
+        a.click();
       },
       setIndex: (index) => {
         set({ index });

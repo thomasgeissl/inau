@@ -1,8 +1,11 @@
-type Type = "YES_NO" | "RATING" | "MULTIPLE_CHOICE" | "TEXT" | "MULTIPLE_CHOICE";
+type Type = "YES_NO" | "RATING" | "MULTIPLE_CHOICE" | "TEXT";
 type Question = QuestionYesNo | QuestionRating | QuestionText | QuestionMultipleChoice;
+const types = ["YES_NO", "RATING", "MULTIPLE_CHOICE", "TEXT"] as const;
+export {types}
 export interface QuestionBase {
   uuid: string;
   type: Type;
+  timeOut?: number;
   text?: string;
   img?: string;
 }
