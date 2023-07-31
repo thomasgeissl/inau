@@ -7,8 +7,9 @@ import {
   FileDownload,
   FileUpload,
 } from "@mui/icons-material";
-import AddQuestion from "./AddQuestion";
+import AddQuestion from "./config/AddQuestion";
 import Question from "./config/Question";
+import { useState } from "react";
 
 const Questions = styled.ul`
   list-style-type: none;
@@ -28,12 +29,10 @@ const FooterActions = styled.div`
 interface ResultProps {}
 
 const Config: React.FC<ResultProps> = ({}) => {
-  const responses = useStore((state) => state.responses);
   const questions = useStore((state) => state.questions);
   const exportQuestions = useStore((state) => state.export);
   const importQuestions = useStore((state) => state.import);
-  const uuid = useParams().uuid ?? "";
-  const question = questions.find((question) => question.uuid === uuid);
+  const [addingQuestion, setAddingQuestion] = useState(false);
 
   return (
     <>
@@ -53,12 +52,12 @@ const Config: React.FC<ResultProps> = ({}) => {
           </li>
         ))}
       </Questions>
-      <AddQuestion></AddQuestion>
-      <FooterActions>
-        <IconButton color="primary">
+      {addingQuestion && <AddQuestion></AddQuestion>}
+      {!addingQuestion && <FooterActions>
+        <IconButton color="primary" onClick={()=>setAddingQuestion(true)}>
           <Add></Add>
         </IconButton>
-      </FooterActions>
+      </FooterActions>}
     </>
   );
 };

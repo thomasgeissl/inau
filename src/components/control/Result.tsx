@@ -2,6 +2,17 @@ import { useEffect } from "react";
 import useStore from "../../stores/control";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
+import {
+  BarChart,
+  Bar,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 interface ResultProps {}
 
@@ -10,6 +21,14 @@ const Result: React.FC<ResultProps> = ({}) => {
   const questions = useStore((state) => state.questions);
   const uuid = useParams().uuid ?? "";
   const question = questions.find((question) => question.uuid === uuid);
+  const yesNoData = question?.type === "YES_NO" ?[
+    {
+      // name: question.labelYes,
+      yes: responses[uuid].filter((response: any) => response.value).length,
+      no: responses[uuid].filter((response: any) => !response.value).length,
+    },
+  ] : [];
+
   if (!question) {
     return <>invalid uuid</>;
   }
@@ -36,6 +55,28 @@ const Result: React.FC<ResultProps> = ({}) => {
               }
             </>
           )}
+
+          {/* <ResponsiveContainer width="100%" height="100%"> */}
+            <BarChart
+              width={500}
+              height={300}
+              data={yesNoData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="yes" fill="#8884d8" />
+              <Bar dataKey="no" fill="#82ca9d" />
+            </BarChart>
+          {/* </ResponsiveContainer> */}
         </div>
       )}
       {question.type === "RATING" && (
@@ -91,7 +132,7 @@ const Result: React.FC<ResultProps> = ({}) => {
                     {
                       // question.options
                       responses[uuid]
-                      .map((response: any) => response.value)
+                        .map((response: any) => response.value)
                         .flat()
                         // .map((option: any) => {
                         //   return option.value;

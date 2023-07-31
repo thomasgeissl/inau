@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
 import { uniq } from "lodash";
-import * as mqtt from "mqtt/dist/mqtt";
+import * as mqtt from "mqtt";
 import { Question, QuestionYesNo } from "../types/Question";
 
 const client = mqtt.connect("ws://localhost:9001");
