@@ -12,7 +12,9 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  Pie, PieChart
 } from "recharts";
+
 
 interface ResultProps {}
 
@@ -23,9 +25,12 @@ const Result: React.FC<ResultProps> = ({}) => {
   const question = questions.find((question) => question.uuid === uuid);
   const yesNoData = question?.type === "YES_NO" ?[
     {
-      // name: question.labelYes,
-      yes: responses[uuid].filter((response: any) => response.value).length,
-      no: responses[uuid].filter((response: any) => !response.value).length,
+      name: question.labelYes,
+      count: responses[uuid].filter((response: any) => response.value).length,
+    },
+    {
+      name: question.labelNo,
+      count: responses[uuid].filter((response: any) => !response.value).length,
     },
   ] : [];
 
@@ -57,7 +62,7 @@ const Result: React.FC<ResultProps> = ({}) => {
           )}
 
           {/* <ResponsiveContainer width="100%" height="100%"> */}
-            <BarChart
+            {/* <BarChart
               width={500}
               height={300}
               data={yesNoData}
@@ -76,6 +81,20 @@ const Result: React.FC<ResultProps> = ({}) => {
               <Bar dataKey="yes" fill="#8884d8" />
               <Bar dataKey="no" fill="#82ca9d" />
             </BarChart>
+            */}
+            <PieChart width={400} height={400}> 
+          <Pie
+            dataKey="count"
+            startAngle={360}
+            endAngle={0}
+            data={yesNoData}
+            cx="50%"
+            cy="50%"
+            outerRadius={80}
+            fill="#8884d8"
+            label
+          />
+        </PieChart>
           {/* </ResponsiveContainer> */}
         </div>
       )}
