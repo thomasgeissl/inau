@@ -151,7 +151,7 @@ const useStore = create<ControlState>()(
         document.body.appendChild(inputElement);
 
         // Function to handle file selection and reading
-        function handleFileUpload(event) {
+        function handleFileUpload(event: any) {
           const file = event.target.files[0];
 
           if (!file) {
@@ -161,7 +161,7 @@ const useStore = create<ControlState>()(
 
           const reader = new FileReader();
 
-          reader.onload = function (event) {
+          reader.onload = function (event: any) {
             if (event) {
               const jsonContent = event.target.result;
               try {
