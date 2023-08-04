@@ -9,10 +9,10 @@ const client = mqtt.connect("ws://localhost:9001");
 
 client.on("connect", function () {
   client.subscribe("inau/response", function (err) {
-    console.error(err)
+    console.error(err);
   });
   client.subscribe("inau/login", function (err) {
-    console.error(err)
+    console.error(err);
   });
 });
 
@@ -162,13 +162,15 @@ const useStore = create<ControlState>()(
           const reader = new FileReader();
 
           reader.onload = function (event) {
-            const jsonContent = event.target.result;
-            try {
-              const jsonData = JSON.parse(jsonContent);
-              // Do whatever you want with the jsonData here
-              set({ questions: jsonData });
-            } catch (error) {
-              console.error("Error parsing JSON:", error);
+            if (event) {
+              const jsonContent = event.target.result;
+              try {
+                const jsonData = JSON.parse(jsonContent);
+                // Do whatever you want with the jsonData here
+                set({ questions: jsonData });
+              } catch (error) {
+                console.error("Error parsing JSON:", error);
+              }
             }
           };
 

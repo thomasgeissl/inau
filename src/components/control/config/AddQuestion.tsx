@@ -1,14 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import useStore from "../../../stores/control";
-import { useParams } from "react-router-dom";
 import _ from "lodash";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 import styled from "@emotion/styled";
-import { Question, QuestionYesNo, types } from "../../../types/Question";
+import { Question, types } from "../../../types/Question";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import { convertToHTML } from "draft-convert";
-import { types as questionTypes } from "../../../types/Question";
 import { v4 } from "uuid";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -99,13 +97,24 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
           ></TextField>
         </>
       )}
-            {type === "TEXT" && (
+      {type === "TEXT" && (
         <>
           <TextField
             label="word count"
             color="primary"
             value={wordCount}
             onChange={(event) => setWordCount(parseInt(event.target.value))}
+            type="number"
+          ></TextField>
+        </>
+      )}
+      {type === "MULTIPLE_CHOICE" && (
+        <>
+          <TextField
+            label="number of selection"
+            color="primary"
+            value={numberOfSelections}
+            onChange={(event) => setNumberOfSelections(parseInt(event.target.value))}
             type="number"
           ></TextField>
         </>

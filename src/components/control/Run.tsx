@@ -17,17 +17,11 @@ const Content = styled.div`
 const Footer = styled.div`
   padding: 16px;
 `;
-const List = styled.ul`
-  list-style-type: none;
-`;
 
 interface RunProps {}
 const Run: React.FC<RunProps> = ({}) => {
-  const users = useStore((state) => state.users);
   const index = useStore((state) => state.index);
   const setIndex = useStore((state) => state.setIndex);
-  const next = useStore((state) => state.next);
-  const previous = useStore((state) => state.previous);
   const questions = useStore((state) => state.questions);
   const question = questions[index];
   useEffect(() => {
@@ -51,7 +45,7 @@ const Run: React.FC<RunProps> = ({}) => {
                 color="primary"
                 page={index + 1}
                 variant="outlined"
-                onChange={(event, value) => {
+                onChange={(_, value) => {
                   setIndex(value - 1);
                 }}
               />
