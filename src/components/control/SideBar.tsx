@@ -39,7 +39,9 @@ const SideBar: React.FC<HeaderProps> = ({}) => {
         {location.pathname === "/control/run" && (
           <MenuItem>
             <Link to="/control/actions">
-              <StopIcon></StopIcon>
+              <IconButton color="primary">
+                <StopIcon></StopIcon>
+              </IconButton>
             </Link>
           </MenuItem>
         )}
