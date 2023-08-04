@@ -50,7 +50,7 @@ const useStore = create<ClientState>()(
           // TODO: send heartbeat
         }, 10*1000)
       },
-      setQuestion: (question) => set((state) => ({ question })),
+      setQuestion: (question) => set(() => ({ question })),
       respond: (value) => {
         const payload = {
           user: get().uuid,

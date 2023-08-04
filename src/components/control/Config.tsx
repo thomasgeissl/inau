@@ -1,6 +1,5 @@
 import useStore from "../../stores/control";
-import { useParams } from "react-router-dom";
-import { Box, Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import styled from "@emotion/styled";
 import { Add, FileDownload, FileUpload } from "@mui/icons-material";
 import AddQuestion from "./config/AddQuestion";
@@ -52,7 +51,7 @@ const Config: React.FC<ResultProps> = ({}) => {
       </Actions>
       <Content>
         <Questions>
-          {questions.map((question, index) => (
+          {questions.map((question) => (
             <li key={question.uuid}>
               <Question question={question}></Question>
             </li>

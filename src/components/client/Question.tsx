@@ -1,5 +1,6 @@
+import { useState } from "react";
+import styled from "@emotion/styled";
 import {
-  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -7,10 +8,8 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import styled from "@emotion/styled";
 import { Question as QuestionType } from "../../types/Question";
 import useStore from "../../stores/client";
-import { useState } from "react";
 
 interface QuestionProps {
   question: QuestionType;
@@ -136,7 +135,7 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
                             control={
                               <Checkbox
                                 checked={selectedOptions.includes(option)}
-                                onChange={(event) => {
+                                onChange={() => {
                                   if (selectedOptions.includes(option)) {
                                     setSelectionOptions(
                                       selectedOptions.filter(

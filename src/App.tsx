@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import styled from "@emotion/styled";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+
 import Actions from "./components/Actions";
 import Client from "./components/Client";
 import Result from "./components/control/Result";
-import styled from "@emotion/styled";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
-import Header from "./components/control/Header";
 import Users from "./components/control/Users";
 import Run from "./components/control/Run";
 import SideBar from "./components/control/SideBar";

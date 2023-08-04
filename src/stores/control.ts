@@ -3,13 +3,17 @@ import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
 import { uniq } from "lodash";
 import * as mqtt from "mqtt";
-import { Question, QuestionYesNo } from "../types/Question";
+import { Question } from "../types/Question";
 
 const client = mqtt.connect("ws://localhost:9001");
 
 client.on("connect", function () {
-  client.subscribe("inau/response", function (err) {});
-  client.subscribe("inau/login", function (err) {});
+  client.subscribe("inau/response", function (err) {
+    console.error(err)
+  });
+  client.subscribe("inau/login", function (err) {
+    console.error(err)
+  });
 });
 
 client.on("message", function (topic, message) {
