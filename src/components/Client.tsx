@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 const Container = styled.div`
   /* padding: 64px; */
   height: 100%;
+  width: 100%;
 `;
 interface ClientProps {}
 const Client: React.FC<ClientProps> = ({}) => {
@@ -14,7 +15,11 @@ const Client: React.FC<ClientProps> = ({}) => {
   useEffect(() => {
     init();
   }, []);
-  return <Container>{question && <Question question={question} showActions={true} />}</Container>;
+  return (
+    <Container>
+      {question && <Question question={question} showActions={true} />}
+    </Container>
+  );
 };
 
 export default Client;
