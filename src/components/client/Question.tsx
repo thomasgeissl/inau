@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
 import {
+  Box,
   Button,
   Checkbox,
   FormControlLabel,
@@ -53,8 +54,9 @@ const Text = styled.div`
 const List = styled.ul`
   list-style-type: none;
   li {
-    float: left;
+    /* float: left; */
   }
+  padding-left: 0;
 `;
 const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
   const respond = useStore((state) => state.respond);
@@ -69,12 +71,15 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
             <img src={question.img}></img>
           </ImageContainer>
         )}
-        {question?.text && <Text dangerouslySetInnerHTML={{__html: question?.text}}></Text>}
+        {question?.text && (
+          <Text dangerouslySetInnerHTML={{ __html: question?.text }}></Text>
+        )}
       </Content>
       {showActions && (
         <Actions>
           {question?.type === "RATING" && (
             <>
+              {question.labelMin}
               {[0, 1, 2, 3, 4, 5].map((value) => {
                 return (
                   <Button
@@ -88,6 +93,7 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
                   </Button>
                 );
               })}
+              {question.labelMin}
             </>
           )}
           {question?.type === "YES_NO" && (
@@ -124,7 +130,7 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
           {question?.type === "MULTIPLE_CHOICE" && (
             <>
               {question?.numberOfSelections > 1 && (
-                <>
+                <Box>
                   <List>
                     {question?.options.map((option, index) => {
                       return (
@@ -156,11 +162,17 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
                       );
                     })}
                   </List>
-                  <Button variant="outlined" onClick={() => respond(selectedOptions)}>send</Button>
-                </>
+                  <Button
+                    variant="outlined"
+                    onClick={() => respond(selectedOptions)}
+                    fullWidth
+                  >
+                    send
+                  </Button>
+                </Box>
               )}
               {question?.numberOfSelections === 1 && (
-                <>
+                <Box>
                   <RadioGroup
                     row
                     value={selectedOption}
@@ -177,8 +189,14 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
                       );
                     })}
                   </RadioGroup>
-                  <Button variant="outlined" onClick={() => respond(selectedOption)}>send</Button>
-                </>
+                  <Button
+                    variant="outlined"
+                    onClick={() => respond(selectedOption)}
+                    fullWidth
+                  >
+                    send
+                  </Button>
+                </Box>
               )}
             </>
           )}

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import useStore from "../../stores/control";
+import User from "./users/Users";
 
 const Container = styled.div``;
 const List = styled.ul`
@@ -14,7 +15,7 @@ const Users: React.FC<UsersProps> = ({}) => {
       number of users: {users.length}
       <List>
         {users.map((user) => {
-          return <li key={user}>{user}</li>;
+          return <li key={user}><User uuid={user}></User></li>;
         })}
       </List>
     </Container>

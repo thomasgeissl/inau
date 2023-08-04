@@ -1,5 +1,5 @@
 import useStore from "../../stores/control";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import styled from "@emotion/styled";
 import { Add, FileDownload, FileUpload } from "@mui/icons-material";
 import AddQuestion from "./config/AddQuestion";
@@ -62,6 +62,7 @@ const Config: React.FC<ResultProps> = ({}) => {
         {addingQuestion && (
           <AddQuestion
             onQuestionAdded={() => setAddingQuestion(false)}
+            onCancel={() => setAddingQuestion(false)}
           ></AddQuestion>
         )}
         {!addingQuestion && (

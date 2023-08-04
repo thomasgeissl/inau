@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import styled from "@emotion/styled";
 import useStore from "../../stores/control";
-import { Grid, Stack } from "@mui/material";
+import { Button, Grid, Stack } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Question from "../client/Question";
 
@@ -9,6 +9,7 @@ const Container = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
+  height: 100%;
 `;
 const Content = styled.div`
   text-align: center;
@@ -23,7 +24,9 @@ const Run: React.FC<RunProps> = ({}) => {
   const index = useStore((state) => state.index);
   const setIndex = useStore((state) => state.setIndex);
   const questions = useStore((state) => state.questions);
+  const responses = useStore((state) => state.responses);
   const question = questions[index];
+  const responsesForQuestion = responses[question.uuid];
   useEffect(() => {
     setIndex(0);
   }, []);
@@ -37,6 +40,13 @@ const Run: React.FC<RunProps> = ({}) => {
         >
           <Content className="content">
             {question && <Question question={question} showActions={false} />}
+            {responsesForQuestion && (
+              <div style={{ flexGrow: 1 }}>
+                <Button variant="outlined">
+                  {responsesForQuestion.length} responses
+                </Button>
+              </div>
+            )}
           </Content>
           <Footer>
             <Stack spacing={2} alignItems="center">
