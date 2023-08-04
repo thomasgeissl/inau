@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useStore from "../../../stores/control";
 import _ from "lodash";
-import { Button, MenuItem, Select, TextField } from "@mui/material";
+import { Button, IconButton, MenuItem, Select, TextField } from "@mui/material";
 import styled from "@emotion/styled";
 import { Question, types } from "../../../types/Question";
 import { Editor } from "react-draft-wysiwyg";
@@ -10,6 +10,7 @@ import { convertToHTML } from "draft-convert";
 import { v4 } from "uuid";
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { PlusOne } from "@mui/icons-material";
 
 const Container = styled.div`
   padding: 16px;
@@ -32,6 +33,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
   const [labelMax, setLabelMax] = useState("positive");
   const [wordCount, setWordCount] = useState(1);
   const [numberOfSelections, setNumberOfSelections] = useState(1);
+  const [options, setOptions] = useState([] as string[]);
   const addQuestion = useStore((state) => state.addQuestion);
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -114,9 +116,29 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
             label="number of selection"
             color="primary"
             value={numberOfSelections}
-            onChange={(event) => setNumberOfSelections(parseInt(event.target.value))}
+            onChange={(event) =>
+              setNumberOfSelections(parseInt(event.target.value))
+            }
             type="number"
           ></TextField>
+          {options.map((option, index) => {
+            return (
+              <TextField
+                key={`option-${index}`}
+                label={`option ${index}`}
+                color="primary"
+                value={option}
+                onChange={(event) => {
+                  const newOptions = [...options];
+                  newOptions[index] = event.target.value;
+                  setOptions(newOptions);
+                }}
+              />
+            );
+          })}
+          <IconButton onClick={() => setOptions([...options, ""])}>
+            <PlusOne></PlusOne>
+          </IconButton>
         </>
       )}
 
@@ -137,7 +159,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
           if (type === "TEXT") {
             question = {
               uuid: v4(),
-              type, //: (type as typeof(questionTypes)),
+              type,
               text: convertToHTML(editorState.getCurrentContent()),
               wordCount,
             };
@@ -145,7 +167,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
           if (type === "RATING") {
             question = {
               uuid: v4(),
-              type, //: (type as typeof(questionTypes)),
+              type,
               text: convertToHTML(editorState.getCurrentContent()),
               labelMin,
               labelMax,
@@ -154,9 +176,9 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
           if (type === "MULTIPLE_CHOICE") {
             question = {
               uuid: v4(),
-              type, //: (type as typeof(questionTypes)),
+              type,
               text: convertToHTML(editorState.getCurrentContent()),
-              options: [],
+              options,
               numberOfSelections,
             };
           }

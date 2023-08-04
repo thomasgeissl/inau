@@ -1,17 +1,16 @@
-import { useEffect } from "react";
 import useStore from "../../stores/control";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
 import {
-  BarChart,
-  Bar,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
+  // BarChart,
+  // Bar,
+  // Cell,
+  // XAxis,
+  // YAxis,
+  // CartesianGrid,
+  // Tooltip,
+  // Legend,
+  // ResponsiveContainer,
   Pie, PieChart
 } from "recharts";
 

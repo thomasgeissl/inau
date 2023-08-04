@@ -3,8 +3,10 @@ import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
 import * as mqtt from "mqtt";
 import { Question } from "../types/Question";
+import NoSleep from '@uriopass/nosleep.js';
 
 const client = mqtt.connect("ws://localhost:9001");
+const noSleep = new NoSleep();
 
 interface ClientState {
   uuid: string;
@@ -20,6 +22,7 @@ const useStore = create<ClientState>()(
       uuid: v4(),
       Question: null,
       init: () => {
+        noSleep.enable();
         client.on("connect", function () {
           const uuid = useStore.getState().uuid;
           client.publish("inau/login", JSON.stringify({ uuid }));
