@@ -13,6 +13,8 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { PlusOne } from "@mui/icons-material";
 
 const Container = styled.div`
+display: flex;
+flex-direction: column;
   padding: 16px;
   .editor {
     background-color: white;
@@ -37,6 +39,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
   const addQuestion = useStore((state) => state.addQuestion);
 
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [imageUrl, setImageUrl] = useState("");
 
   useEffect(() => {
     setIsMounted(true);
@@ -61,12 +64,20 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
         })}
       </Select>
       {isMounted && (
-        <Editor
-          editorState={editorState}
-          wrapperClassName="wrapper"
-          editorClassName="editor"
-          onEditorStateChange={setEditorState}
-        />
+        <>
+          <Editor
+            editorState={editorState}
+            wrapperClassName="wrapper"
+            editorClassName="editor"
+            onEditorStateChange={setEditorState}
+          />
+          <TextField
+            label="image url"
+            color="primary"
+            value={imageUrl}
+            onChange={(event) => setImageUrl(event.target.value)}
+          ></TextField>
+        </>
       )}
 
       {type === "YES_NO" && (
@@ -150,8 +161,9 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
           if (type === "YES_NO") {
             question = {
               uuid: v4(),
-              type, //: (type as typeof(questionTypes)),
+              type,
               text: convertToHTML(editorState.getCurrentContent()),
+              img: imageUrl,
               labelYes: yesLabel,
               labelNo: noLabel,
             };
@@ -161,6 +173,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
               uuid: v4(),
               type,
               text: convertToHTML(editorState.getCurrentContent()),
+              img: imageUrl,
               wordCount,
             };
           }
@@ -169,6 +182,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
               uuid: v4(),
               type,
               text: convertToHTML(editorState.getCurrentContent()),
+              img: imageUrl,
               labelMin,
               labelMax,
             };
@@ -178,6 +192,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({ onQuestionAdded }) => {
               uuid: v4(),
               type,
               text: convertToHTML(editorState.getCurrentContent()),
+              img: imageUrl,
               options,
               numberOfSelections,
             };

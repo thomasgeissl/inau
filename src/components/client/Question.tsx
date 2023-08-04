@@ -64,7 +64,7 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
   return (
     <Container>
       <Content>
-        {question.img && (
+        {question.img && question.img !== "" && (
           <ImageContainer>
             <img src={question.img}></img>
           </ImageContainer>
