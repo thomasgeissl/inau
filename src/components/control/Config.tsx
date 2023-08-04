@@ -2,15 +2,20 @@ import useStore from "../../stores/control";
 import { useParams } from "react-router-dom";
 import { Box, Button, IconButton } from "@mui/material";
 import styled from "@emotion/styled";
-import {
-  Add,
-  FileDownload,
-  FileUpload,
-} from "@mui/icons-material";
+import { Add, FileDownload, FileUpload } from "@mui/icons-material";
 import AddQuestion from "./config/AddQuestion";
 import Question from "./config/Question";
 import { useState } from "react";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+const Content = styled.div`
+  flex: 1;
+  overflow-y: scroll;
+`;
 const Questions = styled.ul`
   list-style-type: none;
   padding-left: 0;
@@ -35,7 +40,7 @@ const Config: React.FC<ResultProps> = ({}) => {
   const [addingQuestion, setAddingQuestion] = useState(false);
 
   return (
-    <>
+    <Container>
       <Actions>
         <Spacer></Spacer>
         <IconButton onClick={() => importQuestions()} color="primary">
@@ -45,20 +50,30 @@ const Config: React.FC<ResultProps> = ({}) => {
           <FileUpload></FileUpload>
         </IconButton>
       </Actions>
-      <Questions>
-        {questions.map((question, index) => (
-          <li key={question.uuid}>
-            <Question question={question}></Question>
-          </li>
-        ))}
-      </Questions>
-      {addingQuestion && <AddQuestion></AddQuestion>}
-      {!addingQuestion && <FooterActions>
-        <IconButton color="primary" onClick={()=>setAddingQuestion(true)}>
-          <Add></Add>
-        </IconButton>
-      </FooterActions>}
-    </>
+      <Content>
+        <Questions>
+          {questions.map((question, index) => (
+            <li key={question.uuid}>
+              <Question question={question}></Question>
+            </li>
+          ))}
+        </Questions>
+      </Content>
+      <div>
+        {addingQuestion && (
+          <AddQuestion
+            onQuestionAdded={() => setAddingQuestion(false)}
+          ></AddQuestion>
+        )}
+        {!addingQuestion && (
+          <FooterActions>
+            <IconButton color="primary" onClick={() => setAddingQuestion(true)}>
+              <Add></Add>
+            </IconButton>
+          </FooterActions>
+        )}
+      </div>
+    </Container>
   );
 };
 

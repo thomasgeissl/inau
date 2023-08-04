@@ -14,6 +14,9 @@ const Content = styled.div`
   text-align: center;
   flex: 1;
 `;
+const Footer = styled.div`
+  padding: 16px;
+`;
 const List = styled.ul`
   list-style-type: none;
 `;
@@ -27,24 +30,33 @@ const Run: React.FC<RunProps> = ({}) => {
   const previous = useStore((state) => state.previous);
   const questions = useStore((state) => state.questions);
   const question = questions[index];
+  useEffect(() => {
+    setIndex(0);
+  }, []);
   return (
     <Container>
       <Grid container sx={{ width: "100%", height: "100%" }}>
-        <Grid item xs={12}>
-          <Content>
+        <Grid
+          item
+          xs={12}
+          sx={{ height: "100%", display: "flex", flexDirection: "column" }}
+        >
+          <Content className="content">
             {question && <Question question={question} showActions={false} />}
           </Content>
-          <Stack spacing={2} alignItems="center">
-            <Pagination
-              count={questions.length}
-              color="primary"
-              page={index + 1}
-              variant="outlined"
-              onChange={(event, value) => {
-                setIndex(value - 1);
-              }}
-            />
-          </Stack>
+          <Footer>
+            <Stack spacing={2} alignItems="center">
+              <Pagination
+                count={questions.length}
+                color="primary"
+                page={index + 1}
+                variant="outlined"
+                onChange={(event, value) => {
+                  setIndex(value - 1);
+                }}
+              />
+            </Stack>
+          </Footer>
         </Grid>
       </Grid>
     </Container>

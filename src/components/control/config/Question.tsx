@@ -10,9 +10,11 @@ interface QuestionProps {
 
 const Container = styled(Box)`
   margin: 8px;
-  padding: 8px;
+  padding: 16px;
   border-radius: 12px;
+  border-color: rgb(64,64,64);
   border: 1px solid;
+  margin-bottom: 16px;
 `;
 
 const Question: React.FC<QuestionProps> = ({ question }) => {
@@ -27,12 +29,13 @@ const Question: React.FC<QuestionProps> = ({ question }) => {
       onMouseLeave={() => setHovered(false)}
     >
       <Box flex={1}>
-        {question.type}<br></br>
-        {question.text}
+        {question.type}
+        <br></br>
+        {question?.text && <div dangerouslySetInnerHTML={{__html: question.text}}></div>}
       </Box>
       {hovered && (
         <Box>
-            <IconButton
+          <IconButton
             size="small"
             color="primary"
             onClick={() => publish(question.uuid)}

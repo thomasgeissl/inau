@@ -5,7 +5,7 @@ import Actions from "./components/Actions";
 import Client from "./components/Client";
 import Result from "./components/control/Result";
 import styled from "@emotion/styled";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import Header from "./components/control/Header";
 import Users from "./components/control/Users";
@@ -103,6 +103,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <React.StrictMode>
         <RouterProvider router={router} />
       </React.StrictMode>

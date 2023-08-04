@@ -70,7 +70,7 @@ const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
             <img src={question.img}></img>
           </ImageContainer>
         )}
-        <Text>{question?.text}</Text>
+        {question?.text && <Text dangerouslySetInnerHTML={{__html: question?.text}}></Text>}
       </Content>
       {showActions && (
         <Actions>

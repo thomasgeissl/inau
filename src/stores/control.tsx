@@ -39,9 +39,10 @@ interface ControlState {
   setIndex: (index: number) => void;
   next: () => void;
   previous: () => void;
-  deleteQuestion: (uuid:string) => void;
+  deleteQuestion: (uuid: string) => void;
   import: () => void;
   export: () => void;
+  addQuestion: (question: Question) => void;
 }
 
 const useStore = create<ControlState>()(
@@ -189,6 +190,9 @@ const useStore = create<ControlState>()(
       setIndex: (index) => {
         set({ index });
         get().publish(get().questions[index].uuid);
+      },
+      addQuestion: (question) => {
+        set({ questions: [...get().questions, question] });
       },
     }),
     { name: "control" }
