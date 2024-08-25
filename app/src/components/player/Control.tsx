@@ -11,6 +11,7 @@ const Control: React.FC<ControlProps> = (props: ControlProps) => {
   const init = useStore((state) => state.init);
   const shows = useStore((state) => state.shows);
   const show = shows.find((show) => show.id === id);
+  const startedShow = useStore((state) => state.show)
   const playerScene = useStore((state) => state.playerScene)
   const previousScene = useStore((state) => state.setPreviousScene)
   const nextScene = useStore((state) => state.setNextScene)
@@ -20,8 +21,9 @@ const Control: React.FC<ControlProps> = (props: ControlProps) => {
 
   return (
     <Box display={"flex"} flexDirection={"row"} gap={3} width={"100%"} {...props}>
-      <Box flex={1}>
-        <Typography variant="body1">{playerScene?.title}</Typography>
+      <Box flex={1} display={"flex"} flexDirection={"column"}>
+        <Typography variant="body2">show: {startedShow?.title}</Typography>
+        <Typography variant="body2">scene: {playerScene?.title}</Typography>
       </Box>
       <Box display={"flex"} gap={3}>
         <Button variant="outlined" onClick={()=>{previousScene()}}><SkipPrevious></SkipPrevious></Button>

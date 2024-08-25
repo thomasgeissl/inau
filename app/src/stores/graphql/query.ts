@@ -16,8 +16,14 @@ const query = gql`
                   id
                   type
                 }
+                options{
+                  options_id{
+                    id
+                    key
+                    value
+                  }
+                }
             }
-
         }
     }
   }

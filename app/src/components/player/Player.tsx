@@ -22,7 +22,8 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
         player
       </Typography>
       <Box flex={1}>
-        <Scene scene={playerScene}></Scene>
+        {playerScene && <Scene scene={playerScene}></Scene>}
+        {!playerScene && <>this show is not currently active</>}
       </Box>
       <Control></Control>
     </Box>

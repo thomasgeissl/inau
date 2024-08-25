@@ -28,6 +28,17 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
             </Button>
           </Box>
         )}
+        {scene?.type === "choice" && (
+          <Box display={"flex"} gap={3} justifyContent={"center"}>
+            {scene?.options?.options_id?.map((option: any)=>{
+              return (
+                <Button variant="outlined" color="primary" key={`option-${option?.options_id?.id}`}>
+                  {option?.key}
+                </Button>
+              )
+            })}
+          </Box>
+        )}
       </Box>
     </Box>
   );

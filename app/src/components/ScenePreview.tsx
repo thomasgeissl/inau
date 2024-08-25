@@ -38,10 +38,10 @@ const ScenePreview: React.FC<ScenePreviewProps> = (
       {...props}
     >
       <Box>
-        <Button color="primary" variant={selectedTab === "preview" ? "contained" : "outlined"} onClick={()=>{setSelectedTab("preview")}}>
+        <Button color="secondary" variant={selectedTab === "preview" ? "contained" : "outlined"} onClick={()=>{setSelectedTab("preview")}}>
           preview
         </Button>
-        <Button color="primary" variant={selectedTab === "results" ? "contained" : "outlined"} onClick={()=>setSelectedTab("results")}>
+        <Button color="secondary" variant={selectedTab === "results" ? "contained" : "outlined"} onClick={()=>setSelectedTab("results")}>
           results
         </Button>
       </Box>
