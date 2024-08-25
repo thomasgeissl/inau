@@ -10,11 +10,12 @@ services:
       - ./uploads:/directus/uploads
       - ./extensions:/directus/extensions
       - ./snapshots:/directus/snapshots
+      - ./package.json:/directus/package.json
     environment:
       KEY: "8wKkmWPzpyiGuKvg2ECv"
       SECRET: "LnkNkULn9nRajY2gpeq6"
       ADMIN_EMAIL: "thomas.geissl@gmail.com"
-      ADMIN_PASSWORD: "TODO"
+      ADMIN_PASSWORD: "changeme"
       DB_CLIENT: "sqlite3"
       DB_FILENAME: "/directus/database/data.db"
       DB_POOL_MIN: "0"
