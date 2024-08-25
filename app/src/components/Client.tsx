@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useStore from "../stores/client";
 import Question from "./client/Question";
 import styled from "@emotion/styled";
+import Scene from "./client/Scene";
 
 const Container = styled.div`
   /* padding: 64px; */
@@ -11,13 +12,13 @@ const Container = styled.div`
 interface ClientProps {}
 const Client: React.FC<ClientProps> = ({}) => {
   const init = useStore((state) => state.init);
-  const question = useStore((state) => state.question);
+  const scene = useStore((state) => state.scene);
   useEffect(() => {
     init();
   }, []);
   return (
     <Container>
-      {question && <Question question={question} showActions={true} />}
+      {scene && <Scene scene={scene} />}
     </Container>
   );
 };

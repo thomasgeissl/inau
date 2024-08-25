@@ -7,6 +7,10 @@ import { request } from "graphql-request";
 import { Scene } from "../types/Scene";
 
 import query from "./query";
+import NoSleep from '@uriopass/nosleep.js';
+
+const client = mqtt.connect(import.meta.env.VITE_BROKER_URL);
+const noSleep = new NoSleep();
 
 interface ControlState {
   uuid: string;
@@ -61,6 +65,7 @@ const useStore = create<ControlState>()(
         if (!show) {
           return;
         }
+        client.publish("inau/scene", JSON.stringify(scene));
         set({ playerScene: scene });
       },
       setPreviousScene: () => {
