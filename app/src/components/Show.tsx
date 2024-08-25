@@ -7,6 +7,7 @@ import { PlayArrow } from "@mui/icons-material";
 import ScenePreview from "./ScenePreview";
 import Player from "./player/Player";
 import SceneCard from "./SceneCard";
+import OnAir from "./OnAir";
 interface ShowsProps {}
 
 const Show: React.FC<ShowsProps> = ({}) => {
@@ -14,8 +15,11 @@ const Show: React.FC<ShowsProps> = ({}) => {
   const init = useStore((state) => state.init);
   const shows = useStore((state) => state.shows);
   const show = shows.find((show) => show.id === id);
+  const startedShow = useStore((state) => state.show)
+  const startTime = useStore((state) => state.startTime)
   const setPreviewScene = useStore((state) => state.setPreviewScene)
   const setPlayerScene = useStore((state) => state.setPlayerScene)
+  const startShow = useStore((state) => state.startShow)
   useEffect(() => {
     init();
   }, []);
@@ -25,7 +29,8 @@ const Show: React.FC<ShowsProps> = ({}) => {
       <Box display={"flex"}>
       <Typography variant="h4" flex={1}>Show {id}</Typography>
       <Box>
-        start/stop button - time
+        {(!startedShow || startedShow?.id !== show?.id) && <IconButton onClick={()=>startShow(show)}><PlayArrow></PlayArrow></IconButton>}
+        {startedShow?.id === show?.id && <OnAir></OnAir>}
       </Box>
       </Box>
       <Grid container spacing={3} flex={1}>
