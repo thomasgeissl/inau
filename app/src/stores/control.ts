@@ -114,9 +114,8 @@ const useStore = create<ControlState>()(
       ],
       index: 0,
       init: () => {
-        request("http://localhost:8055/graphql", query).then(
+        request(`${import.meta.env.VITE_CMS_BASEURL}/graphql`, query).then(
           (response: any) => {
-            console.log(response);
             set({ shows: response?.shows });
           }
         );

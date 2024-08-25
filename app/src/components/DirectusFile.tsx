@@ -25,7 +25,7 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
   const [data, setData] = useState<any>(null);
   useEffect(() => {
     axios
-      .get(`http://localhost:8055/files/${id}`)
+      .get(`${import.meta.env.VITE_CMS_BASEURL}/files/${id}`)
       .then((response) => {
         console.log(response.data);
         setData(response.data);
@@ -44,8 +44,7 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
     >
       <Box display={"center"} justifyContent={"center"}>
         {file?.type?.startsWith("image") && (
-          <img
-            src={`http://localhost:8055/assets/${id}`}
+          <img src={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
             style={{ maxHeight: "180px" }}
           ></img>
         )}
