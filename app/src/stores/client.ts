@@ -11,7 +11,7 @@ const noSleep = new NoSleep();
 interface ClientState {
   uuid: string;
   scene?: any;
-  init: () => void;
+  init: (id: string) => void;
   setScene: (scene: any) => void;
   respond: (value: any) => void;
 }
@@ -22,21 +22,21 @@ const useStore = create<ClientState>()(
       (set, get) => ({
         uuid: v4(),
         Question: null,
-        init: () => {
+        init: (id: string) => {
           noSleep.enable();
           client.on("connect", function () {
             const uuid = useStore.getState().uuid;
             client.publish("inau/login", JSON.stringify({ uuid }));
-            client.subscribe("inau/scene", function (err) {
+            client.subscribe(`inau/${id}/scene`, function (err) {
               if (err) {
-                console.log("could not subscribe to", "inau/scene");
+                console.log(`could not subscribe to inau/${id}/scene`);
               }
             });
           });
 
           client.on("message", function (topic, message) {
             switch (topic) {
-              case "inau/scene": {
+              case `inau/${id}/scene`: {
                 const scene = JSON.parse(message.toString())
                 useStore.getState().setScene(scene);
                 break;

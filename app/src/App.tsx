@@ -41,7 +41,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "shows/:id",
+    path: "shows/:id/control",
     element: (
       <Container>
         <Show></Show>
@@ -49,69 +49,10 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/run",
+    path: "shows/:id/run",
     element: (
       <Container>
         <Client></Client>
-      </Container>
-    ),
-  },
-
-  {
-    path: "/control/run",
-    element: (
-      <Container>
-        <SideBar></SideBar>
-        <Content>
-          <Run></Run>
-        </Content>
-      </Container>
-    ),
-  },
-  {
-    path: "/control/config",
-    element: (
-      <Container>
-        <SideBar></SideBar>
-        <Content>
-          <Config></Config>
-        </Content>
-      </Container>
-    ),
-  },
-  {
-    path: "/control/actions",
-    element: (
-      <Container>
-        {/* <Header></Header> */}
-        <SideBar></SideBar>
-        <Content>
-          <Actions></Actions>
-        </Content>
-      </Container>
-    ),
-  },
-  {
-    path: "/control/result/:uuid",
-    element: (
-      <Container>
-        {/* <Header></Header> */}
-        <SideBar></SideBar>
-        <Content>
-          <Result></Result>
-        </Content>
-      </Container>
-    ),
-  },
-  {
-    path: "/control/users",
-    element: (
-      <Container>
-        {/* <Header></Header> */}
-        <SideBar></SideBar>
-        <Content>
-          <Users></Users>
-        </Content>
       </Container>
     ),
   },

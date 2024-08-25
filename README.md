@@ -22,3 +22,5 @@ Please note, it is currently being refactored and is not usable.
 ### web app
 * **set variables in .env**: `code app/.env`
 * **start web app**: `cd app && npm run dev`
+* **control interface**: shows/{ID}/control
+* **client interface**: shows/{ID}/run

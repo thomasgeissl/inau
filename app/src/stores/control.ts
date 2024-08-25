@@ -174,7 +174,7 @@ const useStore = create<ControlState>()(
         if (!show) {
           return;
         }
-        client.publish("inau/scene", JSON.stringify(scene));
+        client.publish(`inau/${show?.id ?? "demo"}/scene`, JSON.stringify(scene));
         set({ playerScene: scene });
       },
       setPreviousScene: () => {
