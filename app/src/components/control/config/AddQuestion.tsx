@@ -3,7 +3,7 @@ import useStore from "../../../stores/control";
 import _ from "lodash";
 import { Button, IconButton, MenuItem, Select, TextField } from "@mui/material";
 import styled from "@emotion/styled";
-import { Question, types } from "../../../types/Question";
+import { Scene, types } from "../../../types/Scene";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import { convertToHTML } from "draft-convert";
@@ -178,7 +178,7 @@ const AddQuestion: React.FC<AddQuestionProps> = ({
           variant="outlined"
           fullWidth
           onClick={() => {
-            let question: Question | null = null;
+            let question: Scene | null = null;
             if (type === "YES_NO") {
               question = {
                 uuid: v4(),

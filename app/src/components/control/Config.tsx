@@ -33,7 +33,7 @@ const FooterActions = styled.div`
 interface ResultProps {}
 
 const Config: React.FC<ResultProps> = ({}) => {
-  const questions = useStore((state) => state.questions);
+  const questions = useStore((state) => state.scenes);
   const exportQuestions = useStore((state) => state.export);
   const importQuestions = useStore((state) => state.import);
   const [addingQuestion, setAddingQuestion] = useState(false);

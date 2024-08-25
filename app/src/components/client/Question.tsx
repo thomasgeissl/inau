@@ -9,7 +9,7 @@ import {
   RadioGroup,
   TextField,
 } from "@mui/material";
-import { Question as QuestionType } from "../../types/Question";
+import { Scene as QuestionType } from "../../types/Scene";
 import useStore from "../../stores/client";
 
 interface QuestionProps {

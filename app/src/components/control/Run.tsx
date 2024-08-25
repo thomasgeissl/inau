@@ -23,11 +23,13 @@ interface RunProps {}
 const Run: React.FC<RunProps> = ({}) => {
   const index = useStore((state) => state.index);
   const setIndex = useStore((state) => state.setIndex);
-  const questions = useStore((state) => state.questions);
+  const questions = useStore((state) => state.scenes);
   const responses = useStore((state) => state.responses);
+  const init = useStore((state) => state.init);
   const question = questions[index];
   const responsesForQuestion = responses[question.uuid];
   useEffect(() => {
+    init()
     setIndex(0);
   }, []);
   return (

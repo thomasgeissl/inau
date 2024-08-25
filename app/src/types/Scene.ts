@@ -1,8 +1,8 @@
 type Type = "YES_NO" | "RATING" | "MULTIPLE_CHOICE" | "TEXT";
-type Question = QuestionYesNo | QuestionRating | QuestionText | QuestionMultipleChoice;
+type Scene = SceneYesNo | SceneRating | QuestionText | SceneChoice;
 const types = ["YES_NO", "RATING", "MULTIPLE_CHOICE", "TEXT"] as const;
-export {types}
-export interface QuestionBase {
+export { types };
+export interface SceneBase {
   uuid: string;
   type: Type;
   timeOut?: number;
@@ -10,24 +10,24 @@ export interface QuestionBase {
   img?: string;
 }
 
-export interface QuestionYesNo extends QuestionBase {
+export interface SceneYesNo extends SceneBase {
   type: "YES_NO";
   labelYes: string;
   labelNo: string;
 }
-export interface QuestionMultipleChoice extends QuestionBase {
+export interface SceneChoice extends SceneBase {
   type: "MULTIPLE_CHOICE";
   options: string[];
   numberOfSelections: number;
 }
-export interface QuestionRating extends QuestionBase {
+export interface SceneRating extends SceneBase {
   type: "RATING";
   labelMin: string;
   labelMax: string;
 }
-export interface QuestionText extends QuestionBase {
+export interface QuestionText extends SceneBase {
   type: "TEXT";
   wordCount: number;
 }
 
-export type { Question };
+export type { Scene as Scene };

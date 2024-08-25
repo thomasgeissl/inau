@@ -19,7 +19,7 @@ interface ResultProps {}
 
 const Result: React.FC<ResultProps> = ({}) => {
   const responses = useStore((state) => state.responses);
-  const questions = useStore((state) => state.questions);
+  const questions = useStore((state) => state.scenes);
   const uuid = useParams().uuid ?? "";
   const question = questions.find((question) => question.uuid === uuid);
   const yesNoData = question?.type === "YES_NO" ?[

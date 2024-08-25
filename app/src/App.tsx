@@ -11,6 +11,8 @@ import Users from "./components/control/Users";
 import Run from "./components/control/Run";
 import SideBar from "./components/control/SideBar";
 import Config from "./components/control/Config";
+import Shows from "./components/Shows";
+import Show from "./components/Show";
 
 const Container = styled.div`
   width: 100vw;
@@ -30,6 +32,22 @@ const Content = styled.div`
 `;
 
 const router = createBrowserRouter([
+  {
+    path: "shows",
+    element: (
+      <Container>
+        <Shows></Shows>
+      </Container>
+    ),
+  },
+  {
+    path: "shows/:id",
+    element: (
+      <Container>
+        <Show></Show>
+      </Container>
+    ),
+  },
   {
     path: "/run",
     element: (

@@ -1,0 +1,23 @@
+version: "3"
+services:
+  directus:
+    image: directus/directus:11.0
+    container_name: "inau"
+    ports:
+      - 8055:8055
+    volumes:
+      - ./database:/directus/database
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+      - ./snapshots:/directus/snapshots
+    environment:
+      KEY: "8wKkmWPzpyiGuKvg2ECv"
+      SECRET: "LnkNkULn9nRajY2gpeq6"
+      ADMIN_EMAIL: "thomas.geissl@gmail.com"
+      ADMIN_PASSWORD: "TODO"
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/directus/database/data.db"
+      DB_POOL_MIN: "0"
+      WEBSOCKETS_ENABLED: "true"
+      CORS_ENABLED: "true"
+      CORS_ORIGIN: "true"

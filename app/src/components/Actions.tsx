@@ -12,7 +12,7 @@ const List = styled.ul`
 interface ControlProps {}
 const Actions: React.FC<ControlProps> = ({}) => {
   const publish = useStore((state) => state.publish);
-  const questions = useStore((state) => state.questions);
+  const questions = useStore((state) => state.scenes);
   const responses = useStore((state) => state.responses);
   return (
     <Container>

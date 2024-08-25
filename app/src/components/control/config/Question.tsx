@@ -2,7 +2,7 @@ import { Box, IconButton } from "@mui/material";
 import { Delete, Edit, Send } from "@mui/icons-material";
 import styled from "@emotion/styled";
 import useStore from "../../../stores/control";
-import { Question as QuestionType } from "../../../types/Question";
+import { Scene as QuestionType } from "../../../types/Scene";
 import { useState } from "react";
 interface QuestionProps {
   question: QuestionType;

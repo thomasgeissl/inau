@@ -3,7 +3,10 @@ import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
 import { uniq } from "lodash";
 import * as mqtt from "mqtt";
-import { Question } from "../types/Question";
+import { request } from "graphql-request";
+import { Scene } from "../types/Scene";
+
+import query from "./query";
 
 const client = mqtt.connect("ws://localhost:9001");
 
@@ -33,9 +36,13 @@ client.on("message", function (topic, message) {
 interface ControlState {
   uuid: string;
   users: string[];
-  questions: Question[];
+  shows: any[];
+  scenes: Scene[];
   index: number;
   responses: any;
+  previewScene: any;
+  playerScene: any;
+  init: () => void;
   //   increase: (by: number) => void;
   publish: (uuid: string) => void;
   addUser: (user: any) => void;
@@ -46,7 +53,11 @@ interface ControlState {
   deleteQuestion: (uuid: string) => void;
   import: () => void;
   export: () => void;
-  addQuestion: (question: Question) => void;
+  addQuestion: (question: Scene) => void;
+  setPreviewScene: (scene: Scene) => void;
+  setPlayerScene: (scene: Scene) => void;
+  setPreviousScene: () => void;
+  setNextScene: () => void;
 }
 
 const useStore = create<ControlState>()(
@@ -54,7 +65,8 @@ const useStore = create<ControlState>()(
     (set, get) => ({
       uuid: v4(),
       users: [],
-      questions: [
+      shows: [],
+      scenes: [
         {
           uuid: v4(),
           type: "YES_NO",
@@ -101,9 +113,19 @@ const useStore = create<ControlState>()(
         },
       ],
       index: 0,
+      init: () => {
+        request("http://localhost:8055/graphql", query).then(
+          (response: any) => {
+            console.log(response);
+            set({ shows: response?.shows });
+          }
+        );
+      },
       responses: {},
+      previewScene: null,
+      playerScene: null,
       publish: (uuid) => {
-        const question = get().questions.find((q) => q.uuid === uuid);
+        const question = get().scenes.find((q) => q.uuid === uuid);
         // const payload: QuestionYesNo =
         if (question) {
           client.publish("inau/question", JSON.stringify(question));
@@ -124,21 +146,21 @@ const useStore = create<ControlState>()(
       },
       next: () => {
         const index = get().index + 1;
-        if (index < get().questions.length) {
+        if (index < get().scenes.length) {
           set({ index });
-          get().publish(get().questions[index].uuid);
+          get().publish(get().scenes[index].uuid);
         }
       },
       previous: () => {
         const index = get().index - 1;
         if (index >= 0) {
           set({ index });
-          get().publish(get().questions[index].uuid);
+          get().publish(get().scenes[index].uuid);
         }
       },
       deleteQuestion(uuid) {
-        const questions = get().questions.filter((q) => q.uuid !== uuid);
-        set({ questions });
+        const questions = get().scenes.filter((q) => q.uuid !== uuid);
+        set({ scenes: questions });
       },
       import: () => {
         // Create an invisible input element
@@ -167,7 +189,7 @@ const useStore = create<ControlState>()(
               try {
                 const jsonData = JSON.parse(jsonContent);
                 // Do whatever you want with the jsonData here
-                set({ questions: jsonData });
+                set({ scenes: jsonData });
               } catch (error) {
                 console.error("Error parsing JSON:", error);
               }
@@ -184,7 +206,7 @@ const useStore = create<ControlState>()(
         inputElement.click();
       },
       export: () => {
-        const content = JSON.stringify(get().questions);
+        const content = JSON.stringify(get().scenes);
         const fileName = "export.json";
         const contentType = "text/plain";
         var a = document.createElement("a");
@@ -195,11 +217,19 @@ const useStore = create<ControlState>()(
       },
       setIndex: (index) => {
         set({ index });
-        get().publish(get().questions[index].uuid);
+        get().publish(get().scenes[index].uuid);
       },
       addQuestion: (question) => {
-        set({ questions: [...get().questions, question] });
+        set({ scenes: [...get().scenes, question] });
       },
+      setPreviewScene: (scene: Scene) => {
+        set({ previewScene: scene });
+      },
+      setPlayerScene: (scene: Scene) => {
+        set({ playerScene: scene });
+      },
+      setPreviousScene: () => {},
+      setNextScene: () => {},
     }),
     { name: "control" }
   )
