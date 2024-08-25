@@ -1,16 +1,7 @@
-import { useState } from "react";
-import styled from "@emotion/styled";
 import {
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  Radio,
-  RadioGroup,
-  TextField,
 } from "@mui/material";
-import useStore from "../../stores/client";
 import { ThumbDown, ThumbUp } from "@mui/icons-material";
 import DirectusFile from "../DirectusFile";
 
@@ -19,7 +10,6 @@ interface SceneProps {
 }
 
 const Scene: React.FC<SceneProps> = ({ scene }) => {
-  console.log(scene);
   return (
     <Box display={"flex"} flexDirection={"column"} height="100%">
       {scene?.text && (
