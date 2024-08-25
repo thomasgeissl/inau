@@ -28,8 +28,8 @@ const OnAir: React.FC<OnAirProps> = (props: OnAirProps) => {
       // Format the duration as hh:mm:ss
       const formattedTime = [
         String(duration.hours ?? 0).padStart(2, "0"),
-        String(duration.minutes).padStart(2, "0"),
-        String(duration.seconds).padStart(2, "0"),
+        String(duration.minutes ?? 0).padStart(2, "0"),
+        String(duration.seconds ?? 0).padStart(2, "0"),
       ].join(":");
 
       setTime(formattedTime);

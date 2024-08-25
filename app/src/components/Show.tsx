@@ -78,7 +78,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
         </Grid>
         <Grid item xs={6}>
           <ScenePreview height={"50%"}></ScenePreview>
-          <Player height={"50%"}></Player>
+          {startedShow && <Player height={"50%"}></Player>}
         </Grid>
       </Grid>
     </Box>

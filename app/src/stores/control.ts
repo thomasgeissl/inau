@@ -8,31 +8,6 @@ import { Scene } from "../types/Scene";
 
 import query from "./query";
 
-const client = mqtt.connect("ws://localhost:9001");
-
-client.on("connect", function () {
-  client.subscribe("inau/response", function (err) {
-    console.error(err);
-  });
-  client.subscribe("inau/login", function (err) {
-    console.error(err);
-  });
-});
-
-client.on("message", function (topic, message) {
-  console.log(topic, message.toString());
-  switch (topic) {
-    case "inau/login": {
-      useStore.getState().addUser(JSON.parse(message.toString()));
-      break;
-    }
-    case "inau/response": {
-      useStore.getState().addResponse(JSON.parse(message.toString()));
-      break;
-    }
-  }
-});
-
 interface ControlState {
   uuid: string;
   users: string[];
@@ -58,7 +33,9 @@ const useStore = create<ControlState>()(
       users: [],
       shows: [],
       show: null,
-      startTime: null, 
+      startTime: null,
+      previewScene: null,
+      playerScene: null,
       init: () => {
         request(`${import.meta.env.VITE_CMS_BASEURL}/graphql`, query).then(
           (response: any) => {
@@ -66,14 +43,8 @@ const useStore = create<ControlState>()(
           }
         );
       },
-      previewScene: null,
-      playerScene: null,
       publish: (uuid) => {
-        // const question = get().scenes.find((q) => q.uuid === uuid);
-        // // const payload: QuestionYesNo =
-        // if (question) {
-        //   client.publish("inau/question", JSON.stringify(question));
-        // }
+        // Implement the publish function if needed
       },
       addUser: (user) => {
         const users = uniq([...get().users, user.uuid]);
@@ -82,14 +53,42 @@ const useStore = create<ControlState>()(
       startShow: (show: any) => {
         set({ show, startTime: new Date() });
       },
-      setPreviewScene: (scene: Scene) => {
+      setPreviewScene: (scene: any) => {
         set({ previewScene: scene });
       },
-      setPlayerScene: (scene: Scene) => {
+      setPlayerScene: (scene: any) => {
+        const { show } = get();
+        if (!show) {
+          return;
+        }
         set({ playerScene: scene });
       },
-      setPreviousScene: () => {},
-      setNextScene: () => {},
+      setPreviousScene: () => {
+        const { show, playerScene } = get();
+        if (!show || !show.scenes || !playerScene) return;
+
+        const currentIndex = show.scenes
+          .map((scene: any) => scene.scenes_id)
+          .findIndex((scene: any) => scene.id === playerScene.id);
+
+        if (currentIndex > 0) {
+          const previousScene = show.scenes[currentIndex - 1];
+          set({ playerScene: previousScene?.scenes_id });
+        }
+      },
+      setNextScene: () => {
+        const { show, playerScene } = get();
+        if (!show || !show.scenes || !playerScene) return;
+
+        const currentIndex = show.scenes
+          .map((scene: any) => scene.scenes_id)
+          .findIndex((scene: any) => scene.id === playerScene.id);
+
+        if (currentIndex < show.scenes.length - 1) {
+          const nextScene = show.scenes[currentIndex + 1];
+          set({ playerScene: nextScene?.scenes_id });
+        }
+      },
     }),
     { name: "control" }
   )
