@@ -25,3 +25,10 @@ Please note, it is currently being refactored and is not usable.
 * **start web app**: `cd app && npm run dev`
 * **control interface**: shows/{ID}/control
 * **client interface**: shows/{ID}/run
+
+
+### screenshots
+<p float="left">
+  <img src="./doc/control.png" height="300px" />
+  <img src="./doc/user.png" width="300px" />
+</p>
