@@ -59,7 +59,7 @@ const List = styled.ul`
   padding-left: 0;
 `;
 const Question: React.FC<QuestionProps> = ({ question, showActions }) => {
-  const respond = useStore((state) => state.respond);
+  const respond = useStore((state) => state.publish);
   const [text, setText] = useState("");
   const [selectedOption, setSelectionOption] = useState("");
   const [selectedOptions, setSelectionOptions] = useState([] as string[]);

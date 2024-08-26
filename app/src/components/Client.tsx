@@ -6,7 +6,7 @@ import Scene from "./client/Scene";
 import { useParams } from "react-router-dom";
 
 const Container = styled.div`
-  /* padding: 64px; */
+  padding: 64px;
   height: 100%;
   width: 100%;
 `;
@@ -16,7 +16,9 @@ const Client: React.FC<ClientProps> = ({}) => {
   const init = useStore((state) => state.init);
   const scene = useStore((state) => state.scene);
   useEffect(() => {
-    init(id);
+    if(id){
+      init(id);
+    }
   }, [id]);
   return (
     <Container>

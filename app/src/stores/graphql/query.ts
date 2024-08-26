@@ -26,6 +26,16 @@ const query = gql`
             }
         }
     }
+    responses{
+      show{
+        id
+      }
+      user
+      scene{
+        id
+      }
+      value
+    }
   }
 `;
 

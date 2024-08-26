@@ -178,7 +178,7 @@ const useStore = create<ControlState>()(
         set({ playerScene: scene });
       },
       setPreviousScene: () => {
-        const { show, playerScene } = get();
+        const { show, playerScene, setPlayerScene } = get();
         if (!show || !show.scenes || !playerScene) return;
 
         const currentIndex = show.scenes
@@ -187,11 +187,11 @@ const useStore = create<ControlState>()(
 
         if (currentIndex > 0) {
           const previousScene = show.scenes[currentIndex - 1];
-          set({ playerScene: previousScene?.scenes_id });
+          setPlayerScene(previousScene?.scenes_id)
         }
       },
       setNextScene: () => {
-        const { show, playerScene } = get();
+        const { show, playerScene, setPlayerScene } = get();
         if (!show || !show.scenes || !playerScene) return;
 
         const currentIndex = show.scenes
@@ -200,7 +200,7 @@ const useStore = create<ControlState>()(
 
         if (currentIndex < show.scenes.length - 1) {
           const nextScene = show.scenes[currentIndex + 1];
-          set({ playerScene: nextScene?.scenes_id });
+          setPlayerScene(nextScene?.scenes_id)
         }
       },
     }),
