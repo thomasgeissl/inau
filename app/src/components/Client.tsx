@@ -4,12 +4,8 @@ import Question from "./client/Question";
 import styled from "@emotion/styled";
 import Scene from "./client/Scene";
 import { useParams } from "react-router-dom";
+import { Box } from "@mui/material";
 
-const Container = styled.div`
-  padding: 64px;
-  height: 100%;
-  width: 100%;
-`;
 interface ClientProps {}
 const Client: React.FC<ClientProps> = ({}) => {
   const { id } = useParams()
@@ -21,9 +17,9 @@ const Client: React.FC<ClientProps> = ({}) => {
     }
   }, [id]);
   return (
-    <Container>
+    <Box width="100%" height="100%" sx={{padding: "24px"}}>
       {scene && <Scene scene={scene} />}
-    </Container>
+    </Box>
   );
 };
 

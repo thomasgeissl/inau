@@ -1,8 +1,9 @@
 import useStore from "../stores/control";
-import { Box, BoxProps } from "@mui/material";
+import { Box, BoxProps, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { keyframes } from "@mui/system";
 import { intervalToDuration } from "date-fns";
+import { PlayArrow } from "@mui/icons-material";
 
 interface OnAirProps extends BoxProps {}
 
@@ -41,16 +42,21 @@ const OnAir: React.FC<OnAirProps> = (props: OnAirProps) => {
 
   return (
     <Box
-      display="flex"
-      flexDirection="row"
-      gap={3}
-      width="100%"
-      sx={{
-        // animation: `${blinkAnimation} 3s infinite`,
-      }}
       {...props}
+      display="flex"
+      gap={2}
     >
-      live - {time}
+
+    <Typography variant="body1"
+      sx={{
+        animation: `${blinkAnimation} 3s infinite`,
+      }}
+    >
+        <PlayArrow></PlayArrow>
+    </Typography>
+    <Typography variant="body1">
+       {time}
+    </Typography>
     </Box>
   );
 };

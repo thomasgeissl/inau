@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { PlayArrow } from "@mui/icons-material";
-import ScenePreview from "./ScenePreview";
+import Inspector from "./Inspector";
 import Player from "./player/Player";
 import SceneCard from "./SceneCard";
 import OnAir from "./OnAir";
@@ -58,7 +58,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
         </Box>
       </Box>
       <Grid container spacing={3} flex={1}>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <Box
             display={"flex"}
             flexDirection={"column"}
@@ -75,6 +75,10 @@ const Show: React.FC<ShowsProps> = ({}) => {
                       playerScene?.id === scene?.scenes_id?.id
                         ? theme.palette.secondary.main 
                         : theme.palette.background.paper,
+                        color:
+                      playerScene?.id === scene?.scenes_id?.id
+                        ? theme.palette.secondary.contrastText 
+                        : theme.palette.text.primary,
                   }}
                   onClick={() => setPreviewScene(scene?.scenes_id)}
                 >
@@ -114,9 +118,11 @@ const Show: React.FC<ShowsProps> = ({}) => {
             })}
           </Box>
         </Grid>
-        <Grid item xs={6}>
-          <ScenePreview height={"50%"}></ScenePreview>
-           <Player height={"50%"}></Player>
+        <Grid item xs={4}>
+          <Inspector height="100%"></Inspector>
+        </Grid>
+        <Grid item xs={4}>
+           <Player height="100%"></Player>
         </Grid>
       </Grid>
     </Box>

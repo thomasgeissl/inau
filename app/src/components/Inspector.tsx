@@ -9,15 +9,17 @@ import {
   Grid,
   IconButton,
   Typography,
+  useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { PlayArrow } from "@mui/icons-material";
 import Scene from "./client/Scene";
 interface ScenePreviewProps extends BoxProps {}
 
-const ScenePreview: React.FC<ScenePreviewProps> = (
+const Inspector: React.FC<ScenePreviewProps> = (
   props: ScenePreviewProps
 ) => {
+  const theme = useTheme()
   const { id } = useParams();
   const init = useStore((state) => state.init);
   const previewScene = useStore((state) => state.previewScene);
@@ -34,9 +36,17 @@ const ScenePreview: React.FC<ScenePreviewProps> = (
       flexDirection={"column"}
       gap={3}
       width={"100%"}
-      sx={{ overflow: "auto" }}
+      sx={{ overflow: "auto", padding: "24px", backgroundColor: theme.palette.background.paper}}
       {...props}
     >
+      <Typography
+        variant="h6"
+        fontStyle={"bold"}
+        textTransform={"uppercase"}
+        textAlign={"center"}
+      >
+        inspector
+      </Typography>
       <Box>
         <Button color="secondary" variant={selectedTab === "preview" ? "contained" : "outlined"} onClick={()=>{setSelectedTab("preview")}}>
           preview
@@ -56,4 +66,4 @@ const ScenePreview: React.FC<ScenePreviewProps> = (
   );
 };
 
-export default ScenePreview;
+export default Inspector;

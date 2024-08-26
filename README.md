@@ -11,6 +11,7 @@ Please note, it is currently being refactored and is not usable.
 
 ## Features
 * **real-time CMS updates**: content updates are immediately available in the control app, which is quite handy for the design and development phase
+* **multiple shows**: one installation can host multiple shows in parallel
 
 
 ## Usage

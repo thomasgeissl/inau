@@ -28,7 +28,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
           <Box display={"flex"} gap={3} justifyContent={"center"}>
             <Button
               variant={value === true ? "contained" : "outlined"}
-              color="primary"
+              color="secondary"
               onClick={() => {
                 setValue(true);
               }}
@@ -37,7 +37,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
             </Button>
             <Button
               variant={value === false ? "contained" : "outlined"}
-              color="primary"
+              color="secondary"
               onClick={() => {
                 setValue(false);
               }}
@@ -47,14 +47,15 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
           </Box>
         )}
         {scene?.type === "choice" && (
-          <Box display={"flex"} gap={3} justifyContent={"center"}>
+          <Box display={"flex"} flexDirection="column" gap={3} justifyContent={"center"} sx={{marginBottom: "24px"}}>
             {scene.options?.map((option: any) => {
               return (
                 <Button
                   variant={
                     value === option?.options_id?.key ? "contained" : "outlined"
                   }
-                  color="primary"
+                  fullWidth
+                  color="secondary"
                   key={`option-${option?.options_id?.id}`}
                   onClick={() => {
                     setOption(option?.options_id);
@@ -68,7 +69,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
         )}
       </Box>
       <Button
-        color="secondary"
+        color="primary"
         variant="contained"
         sx={{ marginTop: "24px" }}
         onClick={() => {

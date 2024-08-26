@@ -1,15 +1,22 @@
-import useStore from "../../stores/control";
-import { useParams } from "react-router-dom";
-import _ from "lodash";
-import { Box, BoxProps, Button, Card, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  BoxProps,
+  Button,
+  Card,
+  Grid,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useEffect } from "react";
-import { PlayArrow } from "@mui/icons-material";
-import Control from "./Control";
 import Scene from "../client/Scene";
+import useStore from "../../stores/control";
+import Control from "./Control";
+
 interface PlayerProps extends BoxProps {}
 
 const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
-  const { id } = useParams();
+  const theme = useTheme();
   const init = useStore((state) => state.init);
   const playerScene = useStore((state) => state.playerScene);
   useEffect(() => {
@@ -17,8 +24,20 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   }, []);
 
   return (
-    <Box display={"flex"} flexDirection={"column"} gap={3} width={"100%"}{...props}>
-      <Typography variant="h6" fontStyle={"italic"}>
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      gap={3}
+      width={"100%"}
+      sx={{ backgroundColor: theme.palette.background.paper, padding: "24px" }}
+      {...props}
+    >
+      <Typography
+        variant="h6"
+        fontStyle={"bold"}
+        textTransform={"uppercase"}
+        textAlign={"center"}
+      >
         player
       </Typography>
       <Box flex={1}>
