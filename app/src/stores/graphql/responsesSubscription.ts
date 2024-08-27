@@ -5,6 +5,14 @@ subscription{
             event
             data{
                 id
+                show{
+                    id
+                }
+                user
+                scene{
+                    id
+                }
+                value
             }
         }
     }

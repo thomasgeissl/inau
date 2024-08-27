@@ -62,9 +62,7 @@ graphqlSubscriptionClient.subscribe(
   {
     next: ({ data }: any) => {
       if (data?.responses_mutated?.event == "create") {
-        // useStore.getState().updateScene(data?.scenes_mutated?.data);
-        console.log("new response")
-        // useStore.getState().addResponse()
+        useStore.getState().addResponse(data?.responses_mutated?.data);
       }
     },
     error: (err) => {
@@ -111,7 +109,7 @@ const useStore = create<ControlState>()(
       init: () => {
         request(`${import.meta.env.VITE_CMS_BASEURL}/graphql`, query).then(
           (response: any) => {
-            set({ shows: response?.shows });
+            set({ shows: response?.shows, responses: response.responses});
           }
         );
         if (inited) {
@@ -171,7 +169,8 @@ const useStore = create<ControlState>()(
       },
       addResponse: (response: any) => {
         const responses = [...get().responses]
-        // TODO: add to array
+        responses.push(response)
+        console.log(response)
         set({ responses: responses });
       },
       updateShow: (updatedShow: any) => {
