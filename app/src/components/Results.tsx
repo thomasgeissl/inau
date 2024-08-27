@@ -20,10 +20,26 @@ interface ResultsProps extends BoxProps {
 }
 
 const colors = [
-  "#FF5733", "#33FF57", "#3357FF", "#F39C12", "#8E44AD",
-  "#16A085", "#C0392B", "#2980B9", "#D35400", "#2ECC71",
-  "#9B59B6", "#E74C3C", "#1ABC9C", "#34495E", "#27AE60",
-  "#F1C40F", "#7F8C8D", "#E67E22", "#2980B9", "#BDC3C7"
+  "#FF5733",
+  "#33FF57",
+  "#3357FF",
+  "#F39C12",
+  "#8E44AD",
+  "#16A085",
+  "#C0392B",
+  "#2980B9",
+  "#D35400",
+  "#2ECC71",
+  "#9B59B6",
+  "#E74C3C",
+  "#1ABC9C",
+  "#34495E",
+  "#27AE60",
+  "#F1C40F",
+  "#7F8C8D",
+  "#E67E22",
+  "#2980B9",
+  "#BDC3C7",
 ];
 
 const Results: React.FC<ResultsProps> = ({
@@ -58,8 +74,26 @@ const Results: React.FC<ResultsProps> = ({
 
     scene?.options?.forEach((option: any) => {
       const key: string = option?.options_id?.key;
-      entry[key] = filteredResponses.filter((response) => response.value === key).length;
+      entry[key] = filteredResponses.filter(
+        (response) => response.value === key
+      ).length;
     });
+
+    data = [entry];
+  }
+
+  if (scene.type === "rating") {
+    const entry: { name: string; [key: string]: any } = {
+      name: "Page A",
+    };
+
+    [1, 2, 3, 4, 5].forEach((option: number) => {
+      entry[option] = filteredResponses.filter(
+        (response) => response.value === option.toString()
+      ).length;
+    });
+
+    console.log(entry);
 
     data = [entry];
   }
@@ -100,6 +134,32 @@ const Results: React.FC<ResultsProps> = ({
             ))}
           </BarChart>
         </>
+      )}
+
+      {data && scene.type === "rating" && (
+        <Box>
+          <Typography variant="body1" sx={{ marginBottom: "24px" }}>
+            avg:{" "}
+            {filteredResponses.reduce((accumulator, current) => {
+              return accumulator + Number(current.value);
+            }, 0) / filteredResponses.length}
+          </Typography>
+          <BarChart width={300} height={250} data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {[1, 2, 3, 4, 5].map((option: any, index: number) => (
+              <Bar
+                key={`star-${option}`}
+                dataKey={option}
+                fill={colors[index]}
+                name={option}
+              />
+            ))}
+          </BarChart>
+        </Box>
       )}
       {/* <pre>{JSON.stringify(filteredResponses, null, 4)}</pre> */}
     </Box>

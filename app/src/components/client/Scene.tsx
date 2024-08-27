@@ -1,5 +1,11 @@
-import { Box, Button } from "@mui/material";
-import { ThumbDown, ThumbUp } from "@mui/icons-material";
+import { Box, Button, IconButton } from "@mui/material";
+import {
+  StarOutline,
+  StarRate,
+  StarRateOutlined,
+  ThumbDown,
+  ThumbUp,
+} from "@mui/icons-material";
 import DirectusFile from "../DirectusFile";
 import { useState } from "react";
 import useStore from "../../stores/client";
@@ -47,7 +53,13 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
           </Box>
         )}
         {scene?.type === "choice" && (
-          <Box display={"flex"} flexDirection="column" gap={3} justifyContent={"center"} sx={{marginBottom: "24px"}}>
+          <Box
+            display={"flex"}
+            flexDirection="column"
+            gap={3}
+            justifyContent={"center"}
+            sx={{ marginBottom: "24px" }}
+          >
             {scene.options?.map((option: any) => {
               return (
                 <Button
@@ -63,6 +75,32 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
                 >
                   {option?.options_id?.key}
                 </Button>
+              );
+            })}
+          </Box>
+        )}
+        {scene?.type === "rating" && (
+          <Box
+            display={"flex"}
+            gap={3}
+            justifyContent={"center"}
+            sx={{ marginBottom: "24px" }}
+          >
+            {[1, 2, 3, 4, 5].map((rating) => {
+              return (
+                <IconButton
+                  key={`star-${rating}`}
+                  color={(value >= rating) ? "primary" : "secondary"}
+                  
+                  onClick={() => {
+                    setValue(rating);
+                  }}
+                >
+                  {value < rating && (
+                    <StarRateOutlined></StarRateOutlined>
+                  )}
+                  {value >= rating && <StarRate></StarRate>}
+                </IconButton>
               );
             })}
           </Box>
