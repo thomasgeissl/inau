@@ -2,6 +2,7 @@ import useStore from "../stores/control";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
 import {
+  Badge,
   Box,
   Button,
   Card,
@@ -24,6 +25,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
   const init = useStore((state) => state.init);
   const shows = useStore((state) => state.shows);
   const show = shows.find((show) => show.id === id);
+  const users = useStore((state) => state.users);
   const startedShow = useStore((state) => state.show);
   const startTime = useStore((state) => state.startTime);
   const playerScene = useStore((state) => state.playerScene);
@@ -53,7 +55,9 @@ const Show: React.FC<ShowsProps> = ({}) => {
         </Typography>
         <Box display={"flex"} alignItems={"center"} gap={2}>
           <IconButton onClick={()=>setUsersModalOpen(true)}>
-            <Group></Group>
+            <Badge badgeContent={users.filter(user => user.showId === id).length}>
+              <Group></Group>
+            </Badge>
           </IconButton>
           {(!startedShow || startedShow?.id !== show?.id) && (
             <IconButton onClick={() => startShow(show)}>
@@ -133,10 +137,13 @@ const Show: React.FC<ShowsProps> = ({}) => {
       </Grid>
       <Modal open={usersModalOpen} onClose={() => setUsersModalOpen(false)} title="Users">
         <Box sx={{ width: 400 }}>
-          <h2 id="parent-modal-title">Text in a modal</h2>
-          <p id="parent-modal-description">
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </p>
+          {users.filter((user) => user.showId === id).map((user) =>{
+            return (
+              <Box key={user.uuid} display={"flex"} gap={2} alignItems={"center"}>
+                <Typography>{user.uuid}</Typography>
+              </Box>
+            );
+          })}
         </Box>
       </Modal>
     </Box>

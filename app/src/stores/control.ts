@@ -1,17 +1,17 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
-import { uniq } from "lodash";
 import * as mqtt from "mqtt";
 import { request } from "graphql-request";
-import { Scene } from "../types/Scene";
+import { createClient } from "graphql-ws";
 
 import query from "./graphql/query";
 import programSubscriptionQuery from "./graphql/programSubscription";
 import sceneSubscriptionQuery from "./graphql/sceneSubscription";
-import { createClient } from "graphql-ws";
+import { Scene } from "../types/Scene";
+import { User } from "../types/User";
 
-let inited = false
+let inited = false;
 
 const graphqlSubscriptionClient = createClient({
   url: import.meta.env.VITE_CMS_GRAPHQL_WS_URL,
@@ -55,17 +55,18 @@ graphqlSubscriptionClient.subscribe(
   }
 );
 
+let client: mqtt.MqttClient;
+
 interface ControlState {
   uuid: string;
-  users: string[];
+  users: User[];
   shows: any[];
   show: any;
   startTime: Date | null;
   previewScene: any;
   playerScene: any;
   init: () => void;
-  publish: (uuid: string) => void;
-  addUser: (user: any) => void;
+  addUser: (user: string, show: string) => void;
   updateShow: (show: any) => void;
   updateScene: (scene: any) => void;
   startShow: (show: any) => void;
@@ -91,12 +92,11 @@ const useStore = create<ControlState>()(
             set({ shows: response?.shows });
           }
         );
-        if(inited){
-          return
+        if (inited) {
+          return;
         }
-        inited = true
+        inited = true;
 
-        let client: mqtt.MqttClient;
         client = mqtt.connect(import.meta.env.VITE_BROKER_URL);
 
         client.on("connect", () => {
@@ -115,17 +115,15 @@ const useStore = create<ControlState>()(
             `Received message from topic ${topic}: ${message.toString()}`
           );
 
-          // Extract the id from the topic, assuming the topic format is 'inau/<id>/login'
           const match = topic.match(/^inau\/([^/]+)\/login$/);
           if (match) {
             const id = match[1];
-            console.log(`Extracted ID: ${id}`);
-
-            // Handle messages for the specific topic
-            console.log(
-              "Handling message for specific topic:",
-              message.toString()
-            );
+            try {
+              get().addUser(JSON.parse(message.toString()).uuid, id);
+              console.log(`Extracted ID: ${id}`);
+            } catch (error) {
+              console.log(error);
+            }
 
             // Add further processing with the extracted id and message here
           } else {
@@ -140,11 +138,14 @@ const useStore = create<ControlState>()(
           console.error("Connection error:", err);
         });
       },
-      publish: (uuid) => {
-        // Implement the publish function if needed
-      },
-      addUser: (user) => {
-        const users = uniq([...get().users, user.uuid]);
+      addUser: (user: string, show: string) => {
+        console.log("new user", user);
+        const { users } = get();
+        if (users.filter((u) => u.uuid === user).length > 0) {
+          // update timestamp
+          return;
+        }
+        users.push({ uuid: user, showId: show, timestamp: new Date() });
         set({ users });
       },
       updateShow: (updatedShow: any) => {
