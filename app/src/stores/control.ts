@@ -6,10 +6,11 @@ import { request } from "graphql-request";
 import { createClient } from "graphql-ws";
 
 import query from "./graphql/query";
-import programSubscriptionQuery from "./graphql/programSubscription";
+import showSubscriptionQuery from "./graphql/showSubscription";
 import sceneSubscriptionQuery from "./graphql/sceneSubscription";
 import { Scene } from "../types/Scene";
 import { User } from "../types/User";
+import responsesSubscriptionQuery from "./graphql/responsesSubscription";
 
 let inited = false;
 
@@ -23,7 +24,7 @@ const graphqlSubscriptionClient = createClient({
 
 graphqlSubscriptionClient.subscribe(
   {
-    query: programSubscriptionQuery,
+    query: showSubscriptionQuery,
   },
   {
     next: ({ data }: any) => {
@@ -54,6 +55,24 @@ graphqlSubscriptionClient.subscribe(
     complete: () => {},
   }
 );
+graphqlSubscriptionClient.subscribe(
+  {
+    query: responsesSubscriptionQuery,
+  },
+  {
+    next: ({ data }: any) => {
+      if (data?.responses_mutated?.event == "create") {
+        // useStore.getState().updateScene(data?.scenes_mutated?.data);
+        console.log("new response")
+        // useStore.getState().addResponse()
+      }
+    },
+    error: (err) => {
+      console.log(err);
+    },
+    complete: () => {},
+  }
+)
 
 let client: mqtt.MqttClient;
 
@@ -61,12 +80,14 @@ interface ControlState {
   uuid: string;
   users: User[];
   shows: any[];
+  responses: any[];
   show: any;
   startTime: Date | null;
   previewScene: any;
   playerScene: any;
   init: () => void;
   addUser: (user: string, show: string) => void;
+  addResponse: (response: any) => void;
   updateShow: (show: any) => void;
   updateScene: (scene: any) => void;
   startShow: (show: any) => void;
@@ -82,6 +103,7 @@ const useStore = create<ControlState>()(
       uuid: v4(),
       users: [],
       shows: [],
+      responses: [],
       show: null,
       startTime: null,
       previewScene: null,
@@ -139,14 +161,18 @@ const useStore = create<ControlState>()(
         });
       },
       addUser: (user: string, show: string) => {
-        console.log("new user", user);
-        const { users } = get();
+        const users = [...get().users]
         if (users.filter((u) => u.uuid === user).length > 0) {
           // update timestamp
           return;
         }
         users.push({ uuid: user, showId: show, timestamp: new Date() });
-        set({ users });
+        set({ users:  });
+      },
+      addResponse: (response: any) => {
+        const responses = [...get().responses]
+        // TODO: add to array
+        set({ responses: responses });
       },
       updateShow: (updatedShow: any) => {
         const { shows, show } = get();
