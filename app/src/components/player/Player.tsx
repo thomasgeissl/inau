@@ -17,11 +17,7 @@ interface PlayerProps extends BoxProps {}
 
 const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
   const theme = useTheme();
-  const init = useStore((state) => state.init);
   const playerScene = useStore((state) => state.playerScene);
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
     <Box

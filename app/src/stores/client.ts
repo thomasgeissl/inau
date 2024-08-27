@@ -29,7 +29,7 @@ const useStore = create<ClientState>()(
           noSleep.enable();
           client.on("connect", function () {
             const uuid = useStore.getState().uuid;
-            client.publish("inau/login", JSON.stringify({ uuid }));
+            client.publish(`inau/${id}/login`, JSON.stringify({ uuid }));
             client.subscribe(`inau/${id}/scene`, function (err) {
               if (err) {
                 console.log(`could not subscribe to inau/${id}/scene`);

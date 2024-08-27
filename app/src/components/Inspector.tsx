@@ -26,9 +26,6 @@ const Inspector: React.FC<ScenePreviewProps> = (
   const shows = useStore((state) => state.shows);
   const show = shows.find((show) => show.id === id);
   const [selectedTab, setSelectedTab] = useState("preview")
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
     <Box

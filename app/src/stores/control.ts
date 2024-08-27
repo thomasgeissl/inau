@@ -9,11 +9,9 @@ import { Scene } from "../types/Scene";
 import query from "./graphql/query";
 import programSubscriptionQuery from "./graphql/programSubscription";
 import sceneSubscriptionQuery from "./graphql/sceneSubscription";
-import NoSleep from "@uriopass/nosleep.js";
 import { createClient } from "graphql-ws";
 
-const client = mqtt.connect(import.meta.env.VITE_BROKER_URL);
-const noSleep = new NoSleep();
+let inited = false
 
 const graphqlSubscriptionClient = createClient({
   url: import.meta.env.VITE_CMS_GRAPHQL_WS_URL,
@@ -93,6 +91,54 @@ const useStore = create<ControlState>()(
             set({ shows: response?.shows });
           }
         );
+        if(inited){
+          return
+        }
+        inited = true
+
+        let client: mqtt.MqttClient;
+        client = mqtt.connect(import.meta.env.VITE_BROKER_URL);
+
+        client.on("connect", () => {
+          console.log("Connected to MQTT broker");
+          client.subscribe(`inau/+/login`, (err) => {
+            if (!err) {
+              console.log("Subscription successful");
+            } else {
+              console.error("Subscription failed", err);
+            }
+          });
+        });
+
+        client.on("message", (topic, message) => {
+          console.log(
+            `Received message from topic ${topic}: ${message.toString()}`
+          );
+
+          // Extract the id from the topic, assuming the topic format is 'inau/<id>/login'
+          const match = topic.match(/^inau\/([^/]+)\/login$/);
+          if (match) {
+            const id = match[1];
+            console.log(`Extracted ID: ${id}`);
+
+            // Handle messages for the specific topic
+            console.log(
+              "Handling message for specific topic:",
+              message.toString()
+            );
+
+            // Add further processing with the extracted id and message here
+          } else {
+            console.log("Topic does not match the expected pattern.");
+          }
+
+          // Add further processing here as needed
+        });
+
+        // Handle connection errors
+        client.on("error", (err) => {
+          console.error("Connection error:", err);
+        });
       },
       publish: (uuid) => {
         // Implement the publish function if needed
@@ -174,7 +220,10 @@ const useStore = create<ControlState>()(
         if (!show) {
           return;
         }
-        client.publish(`inau/${show?.id ?? "demo"}/scene`, JSON.stringify(scene));
+        client.publish(
+          `inau/${show?.id ?? "demo"}/scene`,
+          JSON.stringify(scene)
+        );
         set({ playerScene: scene });
       },
       setPreviousScene: () => {
@@ -187,7 +236,7 @@ const useStore = create<ControlState>()(
 
         if (currentIndex > 0) {
           const previousScene = show.scenes[currentIndex - 1];
-          setPlayerScene(previousScene?.scenes_id)
+          setPlayerScene(previousScene?.scenes_id);
         }
       },
       setNextScene: () => {
@@ -200,7 +249,7 @@ const useStore = create<ControlState>()(
 
         if (currentIndex < show.scenes.length - 1) {
           const nextScene = show.scenes[currentIndex + 1];
-          setPlayerScene(nextScene?.scenes_id)
+          setPlayerScene(nextScene?.scenes_id);
         }
       },
     }),

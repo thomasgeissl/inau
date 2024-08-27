@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 import useStore from "../stores/client";
-import Question from "./client/Question";
-import styled from "@emotion/styled";
 import Scene from "./client/Scene";
 import { useParams } from "react-router-dom";
 import { Box } from "@mui/material";

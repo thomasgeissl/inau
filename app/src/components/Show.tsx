@@ -10,12 +10,13 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useEffect } from "react";
-import { PlayArrow } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { Group, Person, PlayArrow } from "@mui/icons-material";
 import Inspector from "./Inspector";
 import Player from "./player/Player";
 import SceneCard from "./SceneCard";
 import OnAir from "./OnAir";
+import Modal from "./Modal";
 interface ShowsProps {}
 
 const Show: React.FC<ShowsProps> = ({}) => {
@@ -29,6 +30,8 @@ const Show: React.FC<ShowsProps> = ({}) => {
   const setPreviewScene = useStore((state) => state.setPreviewScene);
   const setPlayerScene = useStore((state) => state.setPlayerScene);
   const startShow = useStore((state) => state.startShow);
+
+  const [usersModalOpen, setUsersModalOpen] = useState(false);
 
   const theme = useTheme();
   useEffect(() => {
@@ -48,7 +51,10 @@ const Show: React.FC<ShowsProps> = ({}) => {
         <Typography variant="h4" flex={1}>
           Show: {show?.title}
         </Typography>
-        <Box>
+        <Box display={"flex"} alignItems={"center"} gap={2}>
+          <IconButton onClick={()=>setUsersModalOpen(true)}>
+            <Group></Group>
+          </IconButton>
           {(!startedShow || startedShow?.id !== show?.id) && (
             <IconButton onClick={() => startShow(show)}>
               <PlayArrow></PlayArrow>
@@ -73,11 +79,11 @@ const Show: React.FC<ShowsProps> = ({}) => {
                     width: "100%",
                     backgroundColor:
                       playerScene?.id === scene?.scenes_id?.id
-                        ? theme.palette.secondary.main 
+                        ? theme.palette.secondary.main
                         : theme.palette.background.paper,
-                        color:
+                    color:
                       playerScene?.id === scene?.scenes_id?.id
-                        ? theme.palette.secondary.contrastText 
+                        ? theme.palette.secondary.contrastText
                         : theme.palette.text.primary,
                   }}
                   onClick={() => setPreviewScene(scene?.scenes_id)}
@@ -122,9 +128,17 @@ const Show: React.FC<ShowsProps> = ({}) => {
           <Inspector height="100%"></Inspector>
         </Grid>
         <Grid item xs={4}>
-           <Player height="100%"></Player>
+          <Player height="100%"></Player>
         </Grid>
       </Grid>
+      <Modal open={usersModalOpen} onClose={() => setUsersModalOpen(false)} title="Users">
+        <Box sx={{ width: 400 }}>
+          <h2 id="parent-modal-title">Text in a modal</h2>
+          <p id="parent-modal-description">
+            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </p>
+        </Box>
+      </Modal>
     </Box>
   );
 };
