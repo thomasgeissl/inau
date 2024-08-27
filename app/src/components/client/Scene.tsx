@@ -136,6 +136,12 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
                 </Button>
               </Box>
             )}
+            {image && image !== "" && (
+              <Box display={"flex"} gap={3} flexDirection="column">
+                <img src={image} height={"auto"} width={"100%"}></img>
+                <Button variant="outlined" onClick={()=>setImage(null)}>retake</Button>
+              </Box>
+            )}
           </>
         )}
       </Box>

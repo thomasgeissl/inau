@@ -53,10 +53,37 @@ const useStore = create<ClientState>()(
         setScene: (scene) => set(() => ({ scene })),
         publish: (value) => {
           const {uuid, showId, scene} = get()
+
+          // if (image) {
+          //   const file: File | null = base64toFile(image, 'cam_capture.jpg');
+          //   if (!file) {
+          //     return;
+          //   }
+          //   const formData = new FormData();
+          //   formData.append('folder', '0ee7bfc6-bd8d-4a03-8be3-2b574ee28028');
+          //   formData.append('file', file);
+          //   axios.post(`${FILES_URL}`, formData).then((response) => {
+          //     axios
+          //       .post(
+          //       `${import.meta.env.VITE_CMS_BASEURL}/items/responses`,
+          //         JSON.stringify({
+          //           status: 'published',
+          //           photo: response.data.data.id,
+          //         }),
+          //         { headers: { 'Content-Type': 'application/json' } },
+          //       )
+          //       .then((response) => {})
+          //       .catch((error) => {
+          //         console.log(error);
+          //       });
+          //   });
+
+
           axios
             .post(
               `${import.meta.env.VITE_CMS_BASEURL}/items/responses`,
               JSON.stringify({
+                status: 'published',
                 user: uuid,
                 show: showId,
                 scene: scene?.id,
