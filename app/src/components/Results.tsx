@@ -1,9 +1,6 @@
 import useStore from "../stores/control";
-import { useParams } from "react-router-dom";
 import _ from "lodash";
 import { Box, BoxProps, Button, Typography, useTheme } from "@mui/material";
-import { useState } from "react";
-import Scene from "./client/Scene";
 import {
   Bar,
   BarChart,
@@ -13,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
 
 interface ResultsProps extends BoxProps {
   showId: string;
@@ -53,6 +51,7 @@ const Results: React.FC<ResultsProps> = ({
     .filter((response) => response?.show?.id === showId)
     .filter((response) => response.scene?.id === scene.id);
 
+
   let data: any[] = [];
 
   if (scene.type === "bool") {
@@ -92,8 +91,6 @@ const Results: React.FC<ResultsProps> = ({
         (response) => response.value === option.toString()
       ).length;
     });
-
-    console.log(entry);
 
     data = [entry];
   }
@@ -161,6 +158,7 @@ const Results: React.FC<ResultsProps> = ({
           </BarChart>
         </Box>
       )}
+      
       {/* <pre>{JSON.stringify(filteredResponses, null, 4)}</pre> */}
     </Box>
   );

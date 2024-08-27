@@ -7,7 +7,8 @@ import {
   ThumbUp,
 } from "@mui/icons-material";
 import DirectusFile from "../DirectusFile";
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import Webcam from "react-webcam";
 import useStore from "../../stores/client";
 
 interface SceneProps {
@@ -21,6 +22,16 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
   const setOption = (option: any) => {
     setValue(option.key);
   };
+
+  const [image, setImage] = useState<string | null>(null);
+  const webcamRef = useRef<Webcam>(null);
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) {
+      setImage(imageSrc);
+      // onChange(name, priority, description, imageSrc);
+    }
+  }, [webcamRef, setImage]);
 
   return (
     <Box display={"flex"} flexDirection={"column"} height="100%">
@@ -90,20 +101,42 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
               return (
                 <IconButton
                   key={`star-${rating}`}
-                  color={(value >= rating) ? "primary" : "secondary"}
-                  
+                  color={value >= rating ? "primary" : "secondary"}
                   onClick={() => {
                     setValue(rating);
                   }}
                 >
-                  {value < rating && (
-                    <StarRateOutlined></StarRateOutlined>
-                  )}
+                  {value < rating && <StarRateOutlined></StarRateOutlined>}
                   {value >= rating && <StarRate></StarRate>}
                 </IconButton>
               );
             })}
           </Box>
+        )}
+
+        {scene.type === "photo" && (
+          <>
+            {(image === "" || !image) && (
+              <Box display={"flex"} flexDirection={"column"} gap={3}>
+                <Webcam
+                  ref={webcamRef}
+                  width={"100%"}
+                  videoConstraints={{
+                    facingMode: "environment",
+                  }}
+                ></Webcam>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    capture();
+                  }}
+                  color="secondary"
+                >
+                  Take a photo
+                </Button>
+              </Box>
+            )}
+          </>
         )}
       </Box>
       <Button
