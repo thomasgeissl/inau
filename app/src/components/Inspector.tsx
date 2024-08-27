@@ -57,12 +57,13 @@ const Inspector: React.FC<ScenePreviewProps> = (props: ScenePreviewProps) => {
         </Button>
       </Box>
       {previewScene && (
-        <>
+        <Box display="flex" flexDirection="column" gap={3}>
+          <Typography variant="h5">{previewScene.title}</Typography>
           {selectedTab === "preview" && <Scene scene={previewScene}></Scene>}
           {selectedTab === "results" && id && (
             <Results showId={id} scene={previewScene}></Results>
           )}
-        </>
+        </Box>
       )}
       {!previewScene && (
         <>
