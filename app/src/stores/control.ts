@@ -167,7 +167,7 @@ const useStore = create<ControlState>()(
           return;
         }
         users.push({ uuid: user, showId: show, timestamp: new Date() });
-        set({ users:  });
+        set({ users });
       },
       addResponse: (response: any) => {
         const responses = [...get().responses]
