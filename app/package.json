@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -36,6 +37,7 @@
     "zustand": "^4.3.8"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1.6.1",
     "@types/draft-convert": "^2.1.4",
     "@types/lodash": "^4.14.195",
     "@types/mqtt": "^2.5.0",
