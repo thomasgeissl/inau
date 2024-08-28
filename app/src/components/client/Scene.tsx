@@ -17,6 +17,7 @@ interface SceneProps {
 
 const Scene: React.FC<SceneProps> = ({ scene }) => {
   const publish = useStore((state) => state.publish);
+  const setScene = useStore((state) => state.setScene);
   const [value, setValue] = useState<any>(null);
 
   const setOption = (option: any) => {
@@ -38,7 +39,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
       {scene?.text && (
         <Box dangerouslySetInnerHTML={{ __html: scene?.text }}></Box>
       )}
-      {scene?.media && <DirectusFile file={scene.media}></DirectusFile>}
+      {scene?.media && <DirectusFile file={scene.media} onClose={()=>setScene(null)}></DirectusFile>}
       <Box flex={1}></Box>
       <Box className="actions">
         {scene?.type === "bool" && (
@@ -139,23 +140,27 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
             {image && image !== "" && (
               <Box display={"flex"} gap={3} flexDirection="column">
                 <img src={image} height={"auto"} width={"100%"}></img>
-                <Button variant="outlined" onClick={()=>setImage(null)}>retake</Button>
+                <Button variant="outlined" onClick={() => setImage(null)}>
+                  retake
+                </Button>
               </Box>
             )}
           </>
         )}
       </Box>
-      <Button
-        color="primary"
-        variant="contained"
-        sx={{ marginTop: "24px" }}
-        onClick={() => {
-          publish(value);
-          setValue(null);
-        }}
-      >
-        submit
-      </Button>
+      {scene.type !== "media" && (
+        <Button
+          color="primary"
+          variant="contained"
+          sx={{ marginTop: "24px" }}
+          onClick={() => {
+            publish(value);
+            setValue(null);
+          }}
+        >
+          submit
+        </Button>
+      )}
     </Box>
   );
 };

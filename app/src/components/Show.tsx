@@ -68,7 +68,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
         </Box>
       </Box>
       <Grid container spacing={3} flex={1}>
-        <Grid item xs={4}>
+        <Grid item xs={4} sx={{overflow: "auto"}}>
           <Box
             display={"flex"}
             flexDirection={"column"}

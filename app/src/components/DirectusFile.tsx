@@ -1,28 +1,18 @@
 import _ from "lodash";
-import {
-  Box,
-  BoxProps,
-} from "@mui/material";
-// import { useEffect, useState } from "react";
-// import axios from "axios";
+import { Box, BoxProps } from "@mui/material";
+import ReactPlayer from "react-player";
+
 interface DirectusFileProps extends BoxProps {
   file: any;
+  onClose?: () => void;
 }
 
 const DirectusFile: React.FC<DirectusFileProps> = ({
   file,
+  onClose,
   ...props
 }: DirectusFileProps) => {
   const { id, type } = file;
-//   const [data, setData] = useState<any>(null);
-//   useEffect(() => {
-//     axios
-//       .get(`${import.meta.env.VITE_CMS_BASEURL}/files/${id}`)
-//       .then((response) => {
-//         setData(response.data);
-//       })
-//       .catch((error) => {});
-//   }, [id, setData]);
 
   return (
     <Box
@@ -35,9 +25,30 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
     >
       <Box display={"center"} justifyContent={"center"}>
         {file?.type?.startsWith("image") && (
-          <img src={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
+          <img
+            src={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
             style={{ maxHeight: "180px" }}
-          ></img>
+          />
+        )}
+        {file?.type?.startsWith("video") && (
+          <ReactPlayer
+            url={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
+            style={{ maxWidth: "100%" }}
+            muted
+            playing={true}
+            onEnded={() => {
+              if (onClose) {
+                onClose();
+              }
+            }}
+          ></ReactPlayer>
+          //   <video controls style={{maxWidth: "100%"}} autoPlay muted>
+          //     <source
+          //       src={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
+          //       type={file.type}
+          //     />
+          //     Your browser does not support the video tag.
+          //   </video>
         )}
       </Box>
     </Box>
