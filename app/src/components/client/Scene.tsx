@@ -1,11 +1,5 @@
 import { Box, Button, IconButton } from "@mui/material";
-import {
-  StarOutline,
-  StarRate,
-  StarRateOutlined,
-  ThumbDown,
-  ThumbUp,
-} from "@mui/icons-material";
+import { StarRate, StarRateOutlined, ThumbDown, ThumbUp } from "@mui/icons-material";
 import DirectusFile from "../DirectusFile";
 import { useCallback, useRef, useState } from "react";
 import Webcam from "react-webcam";
@@ -30,18 +24,37 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       setImage(imageSrc);
-      // onChange(name, priority, description, imageSrc);
     }
   }, [webcamRef, setImage]);
 
   return (
-    <Box display={"flex"} flexDirection={"column"} height="100%">
+    <Box
+      display={"flex"}
+      flexDirection={"column"}
+      height="100%"
+      sx={{
+        animation: "fadeIn 1s ease-in-out", // Applying the fade-in animation
+        "@keyframes fadeIn": {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      }}
+    >
       {scene?.text && (
-        <Box dangerouslySetInnerHTML={{ __html: scene?.text }}></Box>
+        <Box
+          dangerouslySetInnerHTML={{ __html: scene?.text }}
+          sx={{ animation: "fadeIn 3s ease-in-out" }}
+        ></Box>
       )}
-      {scene?.media && <DirectusFile file={scene.media} onClose={()=>setScene(null)}></DirectusFile>}
+      {scene?.media && (
+        <DirectusFile
+          file={scene.media}
+          onClose={() => setScene(null)}
+          sx={{ animation: "fadeIn 1s ease-in-out" }}
+        />
+      )}
       <Box flex={1}></Box>
-      <Box className="actions">
+      <Box className="actions" sx={{ animation: "fadeIn 1s ease-in-out" }}>
         {scene?.type === "bool" && (
           <Box display={"flex"} gap={3} justifyContent={"center"}>
             <Button
@@ -51,7 +64,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
                 setValue(true);
               }}
             >
-              <ThumbUp></ThumbUp>
+              <ThumbUp />
             </Button>
             <Button
               variant={value === false ? "contained" : "outlined"}
@@ -60,7 +73,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
                 setValue(false);
               }}
             >
-              <ThumbDown></ThumbDown>
+              <ThumbDown />
             </Button>
           </Box>
         )}
@@ -72,23 +85,19 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
             justifyContent={"center"}
             sx={{ marginBottom: "24px" }}
           >
-            {scene.options?.map((option: any) => {
-              return (
-                <Button
-                  variant={
-                    value === option?.options_id?.key ? "contained" : "outlined"
-                  }
-                  fullWidth
-                  color="secondary"
-                  key={`option-${option?.options_id?.id}`}
-                  onClick={() => {
-                    setOption(option?.options_id);
-                  }}
-                >
-                  {option?.options_id?.key}
-                </Button>
-              );
-            })}
+            {scene.options?.map((option: any) => (
+              <Button
+                variant={value === option?.options_id?.key ? "contained" : "outlined"}
+                fullWidth
+                color="secondary"
+                key={`option-${option?.options_id?.id}`}
+                onClick={() => {
+                  setOption(option?.options_id);
+                }}
+              >
+                {option?.options_id?.key}
+              </Button>
+            ))}
           </Box>
         )}
         {scene?.type === "rating" && (
@@ -98,23 +107,20 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
             justifyContent={"center"}
             sx={{ marginBottom: "24px" }}
           >
-            {[1, 2, 3, 4, 5].map((rating) => {
-              return (
-                <IconButton
-                  key={`star-${rating}`}
-                  color={value >= rating ? "primary" : "secondary"}
-                  onClick={() => {
-                    setValue(rating);
-                  }}
-                >
-                  {value < rating && <StarRateOutlined></StarRateOutlined>}
-                  {value >= rating && <StarRate></StarRate>}
-                </IconButton>
-              );
-            })}
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <IconButton
+                key={`star-${rating}`}
+                color={value >= rating ? "primary" : "secondary"}
+                onClick={() => {
+                  setValue(rating);
+                }}
+              >
+                {value < rating && <StarRateOutlined />}
+                {value >= rating && <StarRate />}
+              </IconButton>
+            ))}
           </Box>
         )}
-
         {scene.type === "photo" && (
           <>
             {(image === "" || !image) && (
@@ -125,7 +131,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
                   videoConstraints={{
                     facingMode: "environment",
                   }}
-                ></Webcam>
+                />
                 <Button
                   variant="outlined"
                   onClick={() => {
@@ -139,7 +145,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
             )}
             {image && image !== "" && (
               <Box display={"flex"} gap={3} flexDirection="column">
-                <img src={image} height={"auto"} width={"100%"}></img>
+                <img src={image} height={"auto"} width={"100%"} />
                 <Button variant="outlined" onClick={() => setImage(null)}>
                   retake
                 </Button>
