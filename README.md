@@ -7,11 +7,13 @@ Please note, it is currently being refactored and is not usable.
 ## Scene Types
 * **bool**: Yes/No kind of questions.
 * **choice**: Multiple or single choice questions.
-* **rating**: TODO.
+* **rating**: Star rating (1-5 stars).
+* **media**: this is non interactive, this type can be used to play back a video (muted, autoplay, non-looping)
 
 ## Features
 * **real-time CMS updates**: content updates are immediately available in the control app, which is quite handy for the design and development phase
 * **multiple shows**: one installation can host multiple shows in parallel
+* **desktop app**: the control app can run as a standalone desktop application
 
 
 ## Usage
