@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mqtt-broker:
+    image: node:18-alpine
+    container_name: mqtt-broker
+    volumes:
+      - ./config:/config
+    environment:
+      - NODE_ENV=production
+    working_dir: /config
+    command: npx aedes-cli --config ./config.js
+    ports:
+      - "1883:1883"  # MQTT port
+      - "9001:9001"  # WebSocket port
+    restart: unless-stopped
