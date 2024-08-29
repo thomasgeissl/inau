@@ -7,6 +7,7 @@ import axios from "axios";
 
 const client = mqtt.connect(import.meta.env.VITE_BROKER_URL);
 const noSleep = new NoSleep();
+let inited = false;
 
 interface ClientState {
   uuid: string;
@@ -21,11 +22,34 @@ const useStore = create<ClientState>()(
   devtools(
     persist(
       (set, get) => ({
-        uuid: v4(),
+        uuid: "",
         showId: "",
         scene: null,
         init: (id: string) => {
+          if (inited) {
+            return;
+          }
+          inited = true;
+          const { uuid } = get();
           set({ showId: id });
+          // make sure state has been loaded and then create a new user
+          if (uuid === "") {
+            axios
+              .post(
+                `${import.meta.env.VITE_CMS_BASEURL}/items/users`,
+                JSON.stringify({
+                  status: "published",
+                }),
+                { headers: { "Content-Type": "application/json" } }
+              )
+              .then((response) => {
+                console.log("created", response);
+                set({ uuid: response.data.data.id });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
           noSleep.enable();
           client.on("connect", function () {
             const uuid = useStore.getState().uuid;
@@ -47,12 +71,28 @@ const useStore = create<ClientState>()(
             }
           });
           setTimeout(() => {
-            // TODO: send heartbeat
-          }, 10 * 1000);
+            const { uuid } = get();
+            const newUpdatedAt = new Date().toISOString(); // Current timestamp in ISO format
+            axios
+              .patch(
+                `${import.meta.env.VITE_CMS_BASEURL}/items/users/${uuid}`,
+                JSON.stringify({
+                  status: "published",
+                  updated_at: newUpdatedAt,
+                }),
+                { headers: { "Content-Type": "application/json" } }
+              )
+              .then((response) => {  
+                console.log("updated", response);
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }, 60 * 1000);
         },
         setScene: (scene) => set(() => ({ scene })),
         publish: (value) => {
-          const {uuid, showId, scene} = get()
+          const { uuid, showId, scene } = get();
 
           // if (image) {
           //   const file: File | null = base64toFile(image, 'cam_capture.jpg');
@@ -78,18 +118,16 @@ const useStore = create<ClientState>()(
           //       });
           //   });
 
-
           axios
             .post(
               `${import.meta.env.VITE_CMS_BASEURL}/items/responses`,
               JSON.stringify({
-                status: 'published',
+                status: "published",
                 user: uuid,
                 show: showId,
                 scene: scene?.id,
-                value
-              }
-              ),
+                value,
+              }),
               { headers: { "Content-Type": "application/json" } }
             )
             .then((response) => {
@@ -104,15 +142,14 @@ const useStore = create<ClientState>()(
           //   value,
           // };
           // client.publish("inau/response", JSON.stringify(payload));
-          set({scene: null})
+          set({ scene: null });
         },
       }),
       {
         name: "client",
         partialize: (state) => ({
           uuid: state.uuid,
-          // scene: state.scene
-        }), // only persist the uuid and scene
+        }),
       }
     )
   )
