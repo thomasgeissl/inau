@@ -18,9 +18,12 @@ Please note, it is currently being refactored and is not usable.
 
 ## Usage
 ### CMS
-* **start cms**: `cd cms && docker-compose up`
+* **start cms**: `cd cms && docker compose up -d`
 * **apply db schema**: `docker exec -it inau sh`, `npx directus schema apply ./snapshots/current.yaml`
 * **create a show**
+
+### MQTT brocker
+* **start brocker***: `cd brocker && docker compose up -d`
 
 ### web app
 * **set variables in .env**: `code app/.env`
