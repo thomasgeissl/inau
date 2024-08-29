@@ -1,6 +1,5 @@
 import useStore from "../stores/control";
 import { useParams } from "react-router-dom";
-import _ from "lodash";
 import {
   Badge,
   Box,
@@ -12,12 +11,13 @@ import {
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Group, Person, PlayArrow } from "@mui/icons-material";
+import { Group, PlayArrow } from "@mui/icons-material";
 import Inspector from "./Inspector";
 import Player from "./player/Player";
 import SceneCard from "./SceneCard";
 import OnAir from "./OnAir";
 import Modal from "./Modal";
+
 interface ShowsProps {}
 
 const Show: React.FC<ShowsProps> = ({}) => {
@@ -27,7 +27,6 @@ const Show: React.FC<ShowsProps> = ({}) => {
   const show = shows.find((show) => show.id === id);
   const users = useStore((state) => state.users);
   const startedShow = useStore((state) => state.show);
-  const startTime = useStore((state) => state.startTime);
   const playerScene = useStore((state) => state.playerScene);
   const setPreviewScene = useStore((state) => state.setPreviewScene);
   const setPlayerScene = useStore((state) => state.setPlayerScene);
@@ -42,36 +41,36 @@ const Show: React.FC<ShowsProps> = ({}) => {
 
   return (
     <Box
-      display={"flex"}
-      flexDirection={"column"}
+      display="flex"
+      flexDirection="column"
       gap={3}
-      width={"100%"}
-      flex={1}
-      padding={"24px"}
+      width="100%"
+      height="100vh"  // Ensure the component takes up the full viewport height
+      padding="24px"
     >
-      <Box display={"flex"}>
+      <Box display="flex">
         <Typography variant="h4" flex={1}>
-          Show: {show?.title}
+          {show?.title}
         </Typography>
-        <Box display={"flex"} alignItems={"center"} gap={2}>
-          <IconButton onClick={()=>setUsersModalOpen(true)}>
-            <Badge badgeContent={users.filter(user => user.showId === id).length}>
-              <Group></Group>
+        <Box display="flex" alignItems="center" gap={2}>
+          <IconButton onClick={() => setUsersModalOpen(true)}>
+            <Badge badgeContent={users.filter(user => user.show?.id === id).length}>
+              <Group />
             </Badge>
           </IconButton>
           {(!startedShow || startedShow?.id !== show?.id) && (
             <IconButton onClick={() => startShow(show)}>
-              <PlayArrow></PlayArrow>
+              <PlayArrow />
             </IconButton>
           )}
-          {startedShow?.id === show?.id && <OnAir></OnAir>}
+          {startedShow?.id === show?.id && <OnAir />}
         </Box>
       </Box>
-      <Grid container spacing={3} flex={1}>
-        <Grid item xs={4} sx={{overflow: "auto"}}>
+      <Grid container spacing={3} flex={1} minHeight={0}> {/* Ensure the grid takes up the remaining space */}
+        <Grid item xs={4} sx={{ height: "100%", overflowY: "auto" }}>
           <Box
-            display={"flex"}
-            flexDirection={"column"}
+            display="flex"
+            flexDirection="column"
             gap={3}
             sx={{ overflowY: "auto" }}
           >
@@ -94,7 +93,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
                 >
                   <Grid container>
                     <Grid item xs={11}>
-                      <SceneCard scene={scene?.scenes_id}></SceneCard>
+                      <SceneCard scene={scene?.scenes_id} />
                     </Grid>
                     <Grid
                       item
@@ -105,7 +104,6 @@ const Show: React.FC<ShowsProps> = ({}) => {
                         alignItems: "center",
                       }}
                     >
-                      {" "}
                       <Button
                         sx={{
                           width: "100%",
@@ -120,7 +118,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
                           event.stopPropagation();
                           setPlayerScene(scene?.scenes_id);
                         }}
-                      ></Button>
+                      />
                     </Grid>
                   </Grid>
                 </Card>
@@ -129,21 +127,19 @@ const Show: React.FC<ShowsProps> = ({}) => {
           </Box>
         </Grid>
         <Grid item xs={4}>
-          <Inspector height="100%"></Inspector>
+          <Inspector height="100%" />
         </Grid>
         <Grid item xs={4}>
-          <Player height="100%"></Player>
+          <Player height="100%" />
         </Grid>
       </Grid>
       <Modal open={usersModalOpen} onClose={() => setUsersModalOpen(false)} title="Users">
         <Box sx={{ width: 400 }}>
-          {users.filter((user) => user.showId === id).map((user) =>{
-            return (
-              <Box key={user.uuid} display={"flex"} gap={2} alignItems={"center"}>
-                <Typography>{user.uuid}</Typography>
-              </Box>
-            );
-          })}
+          {users.filter((user) => user.show?.id === id).map((user) => (
+            <Box key={user.uuid} display="flex" gap={2} alignItems="center">
+              <Typography>{user.uuid}</Typography>
+            </Box>
+          ))}
         </Box>
       </Modal>
     </Box>

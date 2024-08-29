@@ -36,6 +36,14 @@ const query = gql`
       }
       value
     }
+    users{
+      id
+      show{
+        id
+      }
+      date_created
+      date_updated
+    }
   }
 `;
 

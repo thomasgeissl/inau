@@ -11,6 +11,7 @@ import sceneSubscriptionQuery from "./graphql/sceneSubscription";
 import { Scene } from "../types/Scene";
 import { User } from "../types/User";
 import responsesSubscriptionQuery from "./graphql/responsesSubscription";
+import usersSubscriptionQuery from "./graphql/usersSubscription";
 
 let inited = false;
 
@@ -71,12 +72,29 @@ graphqlSubscriptionClient.subscribe(
     complete: () => {},
   }
 )
+graphqlSubscriptionClient.subscribe(
+  {
+    query: usersSubscriptionQuery,
+  },
+  {
+    next: ({ data }: any) => {
+      console.log(data)
+      if (data?.users_mutated?.event == "update") {
+        useStore.getState().addOrUpdateUser(data?.users_mutated?.data);
+      }
+    },
+    error: (err) => {
+      console.log(err);
+    },
+    complete: () => {},
+  }
+)
 
 let client: mqtt.MqttClient;
 
 interface ControlState {
   uuid: string;
-  users: User[];
+  users: any[];
   shows: any[];
   responses: any[];
   show: any;
@@ -85,6 +103,7 @@ interface ControlState {
   playerScene: any;
   init: () => void;
   addUser: (user: string, show: string) => void;
+  addOrUpdateUser: (user: any)=>void;
   addResponse: (response: any) => void;
   updateShow: (show: any) => void;
   updateScene: (scene: any) => void;
@@ -109,7 +128,7 @@ const useStore = create<ControlState>()(
       init: () => {
         request(`${import.meta.env.VITE_CMS_BASEURL}/graphql`, query).then(
           (response: any) => {
-            set({ shows: response?.shows, responses: response.responses});
+            set({ shows: response?.shows, responses: response.responses, users: response.users});
           }
         );
         if (inited) {
@@ -139,8 +158,8 @@ const useStore = create<ControlState>()(
           if (match) {
             const id = match[1];
             try {
-              get().addUser(JSON.parse(message.toString()).uuid, id);
-              console.log(`Extracted ID: ${id}`);
+              // get().addUser(JSON.parse(message.toString()).uuid, id);
+              // console.log(`Extracted ID: ${id}`);
             } catch (error) {
               console.log(error);
             }
@@ -159,13 +178,24 @@ const useStore = create<ControlState>()(
         });
       },
       addUser: (user: string, show: string) => {
+        // const users = [...get().users]
+        // if (users.filter((u) => u.uuid === user).length > 0) {
+        //   // update timestamp
+        //   return;
+        // }
+        // users.push({ uuid: user, showId: show, timestamp: new Date() });
+        // set({ users });
+      },
+      addOrUpdateUser: (user: any)=>{
         const users = [...get().users]
-        if (users.filter((u) => u.uuid === user).length > 0) {
-          // update timestamp
-          return;
+        const index = users.findIndex((u) => u.id === user.id);
+        if (index!== -1) {
+          users[index] = {...users[index],...user };
+          set({ users });
+        } else {
+          users.push(user);
+          set({ users });
         }
-        users.push({ uuid: user, showId: show, timestamp: new Date() });
-        set({ users });
       },
       addResponse: (response: any) => {
         const responses = [...get().responses]

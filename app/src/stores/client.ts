@@ -70,15 +70,16 @@ const useStore = create<ClientState>()(
               }
             }
           });
-          setTimeout(() => {
-            const { uuid } = get();
-            const newUpdatedAt = new Date().toISOString(); // Current timestamp in ISO format
+          setInterval(() => {
+            const { uuid, showId } = get();
+            // const newUpdatedAt = new Date().toISOString(); // Current timestamp in ISO format
             axios
               .patch(
                 `${import.meta.env.VITE_CMS_BASEURL}/items/users/${uuid}`,
                 JSON.stringify({
                   status: "published",
-                  updated_at: newUpdatedAt,
+                  show: showId
+                  // updated_at: newUpdatedAt,
                 }),
                 { headers: { "Content-Type": "application/json" } }
               )
