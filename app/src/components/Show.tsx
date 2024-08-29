@@ -113,7 +113,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
                           alignItems: "center",
                         }}
                         startIcon={<PlayArrow />}
-                        onClick={(event) => {
+                        onClick={(event: any) => {
                           event.preventDefault();
                           event.stopPropagation();
                           setPlayerScene(scene?.scenes_id);
