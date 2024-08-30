@@ -27,6 +27,9 @@ const SceneCard: React.FC<SceneCardProps> = (props: SceneCardProps) => {
       gap={3}
       width={"100%"}
       padding={"12px"}
+      sx={{
+        // backgroundColor: scene.color ?? null,
+      }}
       {...props}
     >
       <Typography variant="h4">{scene?.title}</Typography>

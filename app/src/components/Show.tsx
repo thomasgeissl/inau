@@ -10,6 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import { keyframes } from "@mui/system";
 import { useEffect, useState } from "react";
 import { Group, PlayArrow } from "@mui/icons-material";
 import Inspector from "./Inspector";
@@ -18,6 +19,10 @@ import SceneCard from "./SceneCard";
 import OnAir from "./OnAir";
 import Modal from "./Modal";
 
+const blinkAnimation = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+`;
 interface ShowsProps {}
 
 const Show: React.FC<ShowsProps> = ({}) => {
@@ -74,12 +79,14 @@ const Show: React.FC<ShowsProps> = ({}) => {
             gap={3}
             sx={{ overflowY: "auto" }}
           >
-            {show?.scenes?.map((scene: any) => {
+            {show?.scenes?.map((scene: any, index: number) => {
               return (
                 <Card
-                  key={`scene-${scene?.scenes_id?.id}`}
+                  key={`scene-${scene?.scenes_id?.id}-${index}`}
                   sx={{
                     width: "100%",
+                    // animation: 
+                    //   playerScene?.id === scene?.scenes_id?.id ? blinkAnimation : "none",
                     backgroundColor:
                       playerScene?.id === scene?.scenes_id?.id
                         ? theme.palette.secondary.main
@@ -92,12 +99,12 @@ const Show: React.FC<ShowsProps> = ({}) => {
                   onClick={() => setPreviewScene(scene?.scenes_id)}
                 >
                   <Grid container>
-                    <Grid item xs={11}>
+                    <Grid item xs={10}>
                       <SceneCard scene={scene?.scenes_id} />
                     </Grid>
                     <Grid
                       item
-                      xs={1}
+                      xs={2}
                       sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -136,8 +143,9 @@ const Show: React.FC<ShowsProps> = ({}) => {
       <Modal open={usersModalOpen} onClose={() => setUsersModalOpen(false)} title="Users">
         <Box sx={{ width: 400 }}>
           {users.filter((user) => user.show?.id === id).map((user) => (
-            <Box key={user.uuid} display="flex" gap={2} alignItems="center">
-              <Typography>{user.uuid}</Typography>
+            <Box key={user.id} display="flex" flexDirection={"column"} marginBottom={"12px"}>
+              <Typography variant="body1">{user.id}</Typography>
+              <Typography variant="body2" fontStyle={"italic"}>{user.date_updated}</Typography>
             </Box>
           ))}
         </Box>

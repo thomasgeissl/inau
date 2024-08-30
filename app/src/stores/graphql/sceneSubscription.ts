@@ -20,6 +20,7 @@ subscription{
                             value
                         }
                     }
+                    color
             }
         }
     }

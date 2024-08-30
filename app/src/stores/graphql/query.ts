@@ -23,6 +23,7 @@ const query = gql`
                     value
                   }
                 }
+                color
             }
         }
     }

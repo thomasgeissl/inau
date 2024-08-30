@@ -14,16 +14,17 @@ subscription{
                         type
                         text
                         media{
-                        id
-                        type
+                            id
+                            type
                         }
                         options{
-                        options_id{
-                            id
-                            key
-                            value
+                            options_id{
+                                id
+                                key
+                                value
+                            }
                         }
-                        }
+                        color
                     }
                 }
             }
