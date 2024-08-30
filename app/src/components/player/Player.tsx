@@ -37,8 +37,9 @@ const Player: React.FC<PlayerProps> = (props: PlayerProps) => {
       <Typography
         variant="h6"
         fontStyle={"bold"}
-        textTransform={"uppercase"}
-        textAlign={"center"}
+        color="primary"
+        textAlign="right"
+        textTransform="uppercase"
       >
         player
       </Typography>

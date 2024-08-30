@@ -51,7 +51,7 @@ const Control: React.FC<ControlProps> = (props: ControlProps) => {
           >
             <SkipPrevious></SkipPrevious>
           </Button>
-          <Box display={"flex"} justifyItems={"center"}>
+          <Box display={"flex"}>
             <Typography variant="body1">
               {show?.scenes
                 ?.map((scene: any) => scene.scenes_id)

@@ -58,15 +58,15 @@ const Show: React.FC<ShowsProps> = ({}) => {
       height="100vh" // Ensure the component takes up the full viewport height
     >
       <AppBar position="static">
-        <Toolbar display="flex" justifyContent={"space-between"} alignItems={"center"}>
+        <Toolbar display="flex">
           <Typography variant="h4" flex={1}>
             {show?.title}
           </Typography>
           <Box display="flex" justifyContent={"center"} alignItems="center" gap={2} flex={1} sx={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}>
             {(!startedShow || startedShow?.id !== show?.id) && (
-              <IconButton onClick={() => startShow(show)}>
-                <PlayArrow />
-              </IconButton>
+              <Button variant={"outlined"} onClick={() => startShow(show)}>
+                start
+              </Button>
             )}
             {startedShow?.id === show?.id && <OnAir />}
           </Box>

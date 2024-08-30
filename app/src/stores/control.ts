@@ -78,7 +78,6 @@ graphqlSubscriptionClient.subscribe(
   },
   {
     next: ({ data }: any) => {
-      console.log(data)
       if (data?.users_mutated?.event == "update") {
         useStore.getState().addOrUpdateUser(data?.users_mutated?.data);
       }
@@ -200,7 +199,6 @@ const useStore = create<ControlState>()(
       addResponse: (response: any) => {
         const responses = [...get().responses]
         responses.push(response)
-        console.log(response)
         set({ responses: responses });
       },
       updateShow: (updatedShow: any) => {

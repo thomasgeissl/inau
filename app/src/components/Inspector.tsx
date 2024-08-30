@@ -1,7 +1,7 @@
 import useStore from "../stores/control";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
-import { Box, BoxProps, Button, Typography, useTheme } from "@mui/material";
+import { Box, BoxProps, Button, Divider, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import Scene from "./client/Scene";
 import Results from "./Results";
@@ -28,13 +28,15 @@ const Inspector: React.FC<ScenePreviewProps> = (props: ScenePreviewProps) => {
         padding: "24px",
         backgroundColor: theme.palette.background.paper,
       }}
+      flex={1}
       {...props}
     >
       <Typography
         variant="h6"
         fontStyle={"bold"}
-        textTransform={"uppercase"}
-        textAlign={"center"}
+        color="primary"
+        textAlign="right"
+        textTransform="uppercase"
       >
         inspector
       </Typography>
@@ -57,11 +59,12 @@ const Inspector: React.FC<ScenePreviewProps> = (props: ScenePreviewProps) => {
         </Button>
       </Box>
       {previewScene && (
-        <Box display="flex" flexDirection="column" gap={3}>
+        <Box display="flex" flexDirection="column" gap={3} flex={1}>
           <Typography variant="h5">{previewScene.title}</Typography>
+          <Divider color="text.primary"></Divider>
           {selectedTab === "preview" && <Scene scene={previewScene}></Scene>}
           {selectedTab === "results" && id && (
-            <Results showId={id} scene={previewScene}></Results>
+            <Results showId={id} scene={previewScene} flex={1}></Results>
           )}
         </Box>
       )}
