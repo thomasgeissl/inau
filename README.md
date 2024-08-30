@@ -33,7 +33,5 @@ Please note, it is currently being refactored and is not usable.
 
 
 ### screenshots
-<p float="left">
-  <img src="./doc/control.png" height="300px" />
-  <img src="./doc/user.png" width="300px" />
-</p>
+![Control Screenshot](./doc/control.png)
+![User Screenshot](./doc/user.png)
