@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "generate-icons": "convert -size 192x192 xc:white -draw 'circle 96,96 96,0' pwa-192x192.png && convert -size 512x512 xc:white -draw 'circle 256,256 256,0' pwa-512x512.png && convert pwa-192x192.png pwa-512x512.png pwa-icon.ico",
     "tauri": "tauri"
   },
   "dependencies": {
