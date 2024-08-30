@@ -10,6 +10,11 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import MenuIcon from "@mui/icons-material/Menu";
+
 import { keyframes } from "@mui/system";
 import { useEffect, useState } from "react";
 import { Group, PlayArrow } from "@mui/icons-material";
@@ -50,28 +55,33 @@ const Show: React.FC<ShowsProps> = ({}) => {
       flexDirection="column"
       gap={3}
       width="100%"
-      height="100vh"  // Ensure the component takes up the full viewport height
-      padding="24px"
+      height="100vh" // Ensure the component takes up the full viewport height
     >
-      <Box display="flex">
-        <Typography variant="h4" flex={1}>
-          {show?.title}
-        </Typography>
-        <Box display="flex" alignItems="center" gap={2}>
+      <AppBar position="static">
+        <Toolbar display="flex" justifyContent={"space-between"} alignItems={"center"}>
+          <Typography variant="h4" flex={1}>
+            {show?.title}
+          </Typography>
+          <Box display="flex" justifyContent={"center"} alignItems="center" gap={2} flex={1} sx={{position: "absolute", left: "50%", transform: "translateX(-50%)"}}>
+            {(!startedShow || startedShow?.id !== show?.id) && (
+              <IconButton onClick={() => startShow(show)}>
+                <PlayArrow />
+              </IconButton>
+            )}
+            {startedShow?.id === show?.id && <OnAir />}
+          </Box>
           <IconButton onClick={() => setUsersModalOpen(true)}>
-            <Badge badgeContent={users.filter(user => user.show?.id === id).length}>
+            <Badge
+              badgeContent={users.filter((user) => user.show?.id === id).length}
+            >
               <Group />
             </Badge>
           </IconButton>
-          {(!startedShow || startedShow?.id !== show?.id) && (
-            <IconButton onClick={() => startShow(show)}>
-              <PlayArrow />
-            </IconButton>
-          )}
-          {startedShow?.id === show?.id && <OnAir />}
-        </Box>
-      </Box>
-      <Grid container spacing={3} flex={1} minHeight={0}> {/* Ensure the grid takes up the remaining space */}
+        </Toolbar>
+      </AppBar>
+      <Grid container spacing={3} flex={1} minHeight={0}>
+        {" "}
+        {/* Ensure the grid takes up the remaining space */}
         <Grid item xs={4} sx={{ height: "100%", overflowY: "auto" }}>
           <Box
             display="flex"
@@ -85,7 +95,7 @@ const Show: React.FC<ShowsProps> = ({}) => {
                   key={`scene-${scene?.scenes_id?.id}-${index}`}
                   sx={{
                     width: "100%",
-                    // animation: 
+                    // animation:
                     //   playerScene?.id === scene?.scenes_id?.id ? blinkAnimation : "none",
                     backgroundColor:
                       playerScene?.id === scene?.scenes_id?.id
@@ -140,14 +150,27 @@ const Show: React.FC<ShowsProps> = ({}) => {
           <Player height="100%" />
         </Grid>
       </Grid>
-      <Modal open={usersModalOpen} onClose={() => setUsersModalOpen(false)} title="Users">
+      <Modal
+        open={usersModalOpen}
+        onClose={() => setUsersModalOpen(false)}
+        title="Users"
+      >
         <Box sx={{ width: 400 }}>
-          {users.filter((user) => user.show?.id === id).map((user) => (
-            <Box key={user.id} display="flex" flexDirection={"column"} marginBottom={"12px"}>
-              <Typography variant="body1">{user.id}</Typography>
-              <Typography variant="body2" fontStyle={"italic"}>{user.date_updated}</Typography>
-            </Box>
-          ))}
+          {users
+            .filter((user) => user.show?.id === id)
+            .map((user) => (
+              <Box
+                key={user.id}
+                display="flex"
+                flexDirection={"column"}
+                marginBottom={"12px"}
+              >
+                <Typography variant="body1">{user.id}</Typography>
+                <Typography variant="body2" fontStyle={"italic"}>
+                  {user.date_updated}
+                </Typography>
+              </Box>
+            ))}
         </Box>
       </Modal>
     </Box>

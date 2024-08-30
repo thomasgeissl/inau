@@ -1,23 +1,19 @@
 import useStore from "../stores/control";
-import { useParams } from "react-router-dom";
 import _ from "lodash";
 import {
   Box,
   BoxProps,
-  Button,
-  Card,
-  Grid,
-  IconButton,
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
-import { PlayArrow } from "@mui/icons-material";
 interface SceneCardProps extends BoxProps {
   scene: any;
 }
 
 const SceneCard: React.FC<SceneCardProps> = (props: SceneCardProps) => {
   const scene = props?.scene;
+  const playerScene = useStore(state => state.playerScene)
+  // const previewScene = useStore(state => state.previewScene)
   useEffect(() => {}, []);
 
   return (
@@ -32,7 +28,7 @@ const SceneCard: React.FC<SceneCardProps> = (props: SceneCardProps) => {
       }}
       {...props}
     >
-      <Typography variant="h4">{scene?.title}</Typography>
+      <Typography variant="h5" color={playerScene?.id === scene?.id ? "text.primary" : "primary"}>{scene?.title}</Typography>
       <Typography variant="body1">{scene?.description}</Typography>
     </Box>
   );

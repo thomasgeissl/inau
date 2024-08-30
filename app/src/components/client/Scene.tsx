@@ -43,7 +43,7 @@ const Scene: React.FC<SceneProps> = ({ scene }) => {
       {scene?.text && (
         <Box
           dangerouslySetInnerHTML={{ __html: scene?.text }}
-          sx={{ animation: "fadeIn 3s ease-in-out" }}
+          sx={{ animation: "fadeIn 3s ease-in-out", fontSize: "24px" }}
         ></Box>
       )}
       {scene?.media && (
