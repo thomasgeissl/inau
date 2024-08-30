@@ -4,11 +4,13 @@ import ReactPlayer from "react-player";
 
 interface DirectusFileProps extends BoxProps {
   file: any;
+  playerRef?: any;
   onClose?: () => void;
 }
 
 const DirectusFile: React.FC<DirectusFileProps> = ({
   file,
+  playerRef,
   onClose,
   ...props
 }: DirectusFileProps) => {
@@ -32,6 +34,7 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
         )}
         {file?.type?.startsWith("video") && (
           <ReactPlayer
+            ref={playerRef}
             url={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
             style={{ maxWidth: "100%" }}
             muted
@@ -40,6 +43,13 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
               if (onClose) {
                 onClose();
               }
+            }}
+            config={{
+              file: {
+                attributes: {
+                  crossOrigin: "anonymous", // Set crossOrigin attribute
+                },
+              },
             }}
           ></ReactPlayer>
           //   <video controls style={{maxWidth: "100%"}} autoPlay muted>
