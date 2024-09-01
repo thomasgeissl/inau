@@ -31,10 +31,15 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
         .then((response) => {
           if (isBodymovinAnimation(response.data)) {
             setLottieData(response.data)
+          }else{
+            setLottieData(null)
           }
         });
+    }else{
+      setLottieData(null)
     }
-  }, [type]);
+  }, [type, setLottieData]);
+
 
   return (
     <Box
