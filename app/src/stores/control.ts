@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { v4 } from "uuid";
 import * as mqtt from "mqtt";
+import { WebMidi } from "webmidi";
 import { request } from "graphql-request";
 import { createClient } from "graphql-ws";
 
@@ -71,7 +72,7 @@ graphqlSubscriptionClient.subscribe(
     },
     complete: () => {},
   }
-)
+);
 graphqlSubscriptionClient.subscribe(
   {
     query: usersSubscriptionQuery,
@@ -87,7 +88,34 @@ graphqlSubscriptionClient.subscribe(
     },
     complete: () => {},
   }
-)
+);
+
+if (WebMidi.supported) {
+// WebMidi.enable()
+//   .then(onEnabled)
+//   .catch((err) => alert(err));
+
+// Function triggered when WEBMIDI.js is ready
+function onEnabled() {
+  // Display available MIDI input devices
+  if (WebMidi.inputs.length < 1) {
+    console.log("no midi device detected");
+  } else {
+    WebMidi.inputs.forEach((device, index) => {
+      console.log(device.name);
+      device.addListener("noteon", (event)=>{
+        useStore.getState().onNoteOn(1,1,1)
+      })
+      device.addListener("noteoff", (event)=>{
+        useStore.getState().onNoteOff(1,1,1)
+      })
+      device.addListener("controlchange", (event)=>{
+        useStore.getState().onControlChange(1,1,1)
+      })
+    });
+  }
+}
+}
 
 let client: mqtt.MqttClient;
 
@@ -102,7 +130,7 @@ interface ControlState {
   playerScene: any;
   init: () => void;
   addUser: (user: string, show: string) => void;
-  addOrUpdateUser: (user: any)=>void;
+  addOrUpdateUser: (user: any) => void;
   addResponse: (response: any) => void;
   updateShow: (show: any) => void;
   updateScene: (scene: any) => void;
@@ -111,6 +139,9 @@ interface ControlState {
   setPlayerScene: (scene: Scene) => void;
   setPreviousScene: () => void;
   setNextScene: () => void;
+  onNoteOn: (channel: number, note: number, velocity: number) => void;
+  onNoteOff: (channel: number, note: number, velocity: number) => void;
+  onControlChange: (channel: number, control: number, value: number) => void;
 }
 
 const useStore = create<ControlState>()(
@@ -127,7 +158,11 @@ const useStore = create<ControlState>()(
       init: () => {
         request(`${import.meta.env.VITE_CMS_BASEURL}/graphql`, query).then(
           (response: any) => {
-            set({ shows: response?.shows, responses: response.responses, users: response.users});
+            set({
+              shows: response?.shows,
+              responses: response.responses,
+              users: response.users,
+            });
           }
         );
         if (inited) {
@@ -185,11 +220,11 @@ const useStore = create<ControlState>()(
         // users.push({ uuid: user, showId: show, timestamp: new Date() });
         // set({ users });
       },
-      addOrUpdateUser: (user: any)=>{
-        const users = [...get().users]
+      addOrUpdateUser: (user: any) => {
+        const users = [...get().users];
         const index = users.findIndex((u) => u.id === user.id);
-        if (index!== -1) {
-          users[index] = {...users[index],...user };
+        if (index !== -1) {
+          users[index] = { ...users[index], ...user };
           set({ users });
         } else {
           users.push(user);
@@ -197,8 +232,8 @@ const useStore = create<ControlState>()(
         }
       },
       addResponse: (response: any) => {
-        const responses = [...get().responses]
-        responses.push(response)
+        const responses = [...get().responses];
+        responses.push(response);
         set({ responses: responses });
       },
       updateShow: (updatedShow: any) => {
@@ -305,6 +340,15 @@ const useStore = create<ControlState>()(
           const nextScene = show.scenes[currentIndex + 1];
           setPlayerScene(nextScene?.scenes_id);
         }
+      },
+      onNoteOn(channel, note, velocity) {
+        
+      },
+      onNoteOff(channel, note, velocity) {
+        
+      },
+      onControlChange(channel, control, value) {
+        
       },
     }),
     { name: "control" }

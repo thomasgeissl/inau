@@ -1,6 +1,11 @@
 import _ from "lodash";
 import { Box, BoxProps } from "@mui/material";
 import ReactPlayer from "react-player";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Lottie from "lottie-react"
+
+import { isBodymovinAnimation } from "../utils/animation";
 
 interface DirectusFileProps extends BoxProps {
   file: any;
@@ -15,6 +20,21 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
   ...props
 }: DirectusFileProps) => {
   const { id, type } = file;
+  console.log(type);
+
+  const [lottieData, setLottieData] = useState<any|null>(null)
+
+  useEffect(() => {
+    if (type === "application/json") {
+      axios
+        .get(`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`)
+        .then((response) => {
+          if (isBodymovinAnimation(response.data)) {
+            setLottieData(response.data)
+          }
+        });
+    }
+  }, [type]);
 
   return (
     <Box
@@ -26,6 +46,7 @@ const DirectusFile: React.FC<DirectusFileProps> = ({
       {...props}
     >
       <Box display={"center"} justifyContent={"center"}>
+        {lottieData && <Lottie animationData={lottieData} loop={true} />}
         {file?.type?.startsWith("image") && (
           <img
             src={`${import.meta.env.VITE_CMS_BASEURL}/assets/${id}`}
