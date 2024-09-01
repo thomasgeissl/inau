@@ -36,7 +36,7 @@ const Control: React.FC<ControlProps> = (props: ControlProps) => {
       width={"100%"}
       {...props}
     >
-      <Divider color="text.primary"></Divider>
+      <Divider></Divider>
       <Box display={"flex"} flexDirection={"row"} gap={3} justifyItems={"center"}>
         <Box flex={1} display={"flex"} flexDirection={"column"}>
           <Typography variant="body2">show: {startedShow?.title}</Typography>

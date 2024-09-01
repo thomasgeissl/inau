@@ -5,10 +5,14 @@
 Please note, it is currently being refactored and is not usable.
 
 ## Scene Types
+Scenes consist of a text, media (image, video, lottie animation and an interactive component).
+
 * **bool**: Yes/No kind of questions.
 * **choice**: Multiple or single choice questions.
 * **rating**: Star rating (1-5 stars).
+* **photo**: Photo upload for users.
 * **media**: this is non interactive, this type can be used to play back a video (muted, autoplay, non-looping)
+
 
 ## Features
 * **real-time CMS updates**: content updates are immediately available in the control app, which is quite handy for the design and development phase
