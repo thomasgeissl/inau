@@ -1,0 +1,5 @@
+{
+    "showId": "1",
+    "broker": "localhost",
+    "brokerPort": 1883
+}

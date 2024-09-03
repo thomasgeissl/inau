@@ -34,4 +34,8 @@ public:
     ofxMQTT _mqttClient;
     ofxDmx _dmx;
     ofxMidiOut _midiOut;
+
+    ofJson _config;
+    std::string _showId;
+    std::string _showBaseTopic;
 };
