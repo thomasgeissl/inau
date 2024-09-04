@@ -4,6 +4,7 @@
 #include "ofxMQTT.h"
 #include "ofxDmx.h"
 #include "ofxMidi.h"
+#include "ofxSurfingImGui.h"
 
 
 
@@ -38,4 +39,8 @@ public:
     ofJson _config;
     std::string _showId;
     std::string _showBaseTopic;
+
+    ofxSurfingGui _gui;
+    ofParameter<bool> bGui;
+
 };

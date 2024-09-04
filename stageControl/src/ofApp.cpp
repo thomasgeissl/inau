@@ -25,6 +25,12 @@ void ofApp::setup()
     clientId += ofRandom(1024);
     _mqttClient.connect(clientId, "public", "public");
   }
+
+
+  // _gui.setup(nullptr, false, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable, true);
+
+  ofSetEscapeQuitsApp(false);
+  bGui.set("gui", true);
 }
 
 void ofApp::update()
@@ -34,6 +40,48 @@ void ofApp::update()
 
 void ofApp::draw()
 {
+  _gui.Begin();
+  if (_gui.BeginWindow(bGui))
+	{
+		_gui.AddLabelBig("Examples/\n01_\nWidgetsBasic");
+		_gui.AddSpacingBig();
+
+		_gui.AddMinimizerToggle();
+		_gui.AddTooltip("This internal toggle is very useful \nconditioning hiding some stuff \nto simplify our gui layout.");
+		if (_gui.isMaximized()) {
+			_gui.AddAutoResizeToggle();
+			_gui.Add(_gui.bGui_Aligners, OFX_IM_TOGGLE_ROUNDED_MINI);
+		}
+
+		_gui.AddSpacingSeparated();
+
+		_gui.AddLabelBig("> Show \nWindows", true, true);
+		_gui.AddSpacing();
+
+		// _gui.Add(bGui_1, OFX_IM_TOGGLE_ROUNDED_BIG);
+		// _gui.AddTooltip("Some widgets");
+
+		// _gui.Add(bGui_2, OFX_IM_TOGGLE_ROUNDED_BIG);
+		// _gui.AddTooltip("Some ImGui Raw");
+
+		// _gui.Add(bGui_3, OFX_IM_TOGGLE_ROUNDED_BIG);
+		// _gui.AddTooltip("H & V Sliders");
+
+		// _gui.Add(bGui_4, OFX_IM_TOGGLE_ROUNDED_BIG);
+		// _gui.AddTooltip("Sliders & Knobs");
+		
+		//--
+
+		if (_gui.isMaximized()) {
+
+			// An useful bundle of internal control/settings
+			_gui.AddSpacingSeparated();
+			_gui.DrawAdvancedBundle();
+		}
+
+		_gui.EndWindow();
+	}
+  _gui.End();
 }
 
 void ofApp::keyPressed(int key)
