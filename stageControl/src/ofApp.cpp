@@ -3,9 +3,14 @@
 void ofApp::setup()
 {
   ofSetFrameRate(60);
+  // mqtt
   ofAddListener(_mqttClient.onOnline, this, &ofApp::onOnline);
   ofAddListener(_mqttClient.onOffline, this, &ofApp::onOffline);
   ofAddListener(_mqttClient.onMessage, this, &ofApp::onMessage);
+  // tuio
+  ofAddListener(_tuio.touchDown, this, &ofApp::touchDown);
+  ofAddListener(_tuio.touchUp, this, &ofApp::touchUp);
+  ofAddListener(_tuio.touchMoved, this, &ofApp::touchMoved);
 
   ofFile file(ofToDataPath("config.json"));
   if (file.exists())
@@ -24,13 +29,15 @@ void ofApp::setup()
     std::string clientId = "stageControl_";
     clientId += ofRandom(1024);
     _mqttClient.connect(clientId, "public", "public");
-  }
 
+    _tuio.connect(_config["tuioPort"]);
+
+  }
 
   // _gui.setup(nullptr, false, ImGuiConfigFlags_ViewportsEnable | ImGuiConfigFlags_DockingEnable, true);
 
   ofSetEscapeQuitsApp(false);
-  bGui.set("gui", true);
+  _showPreferences.set("preferences", true);
 }
 
 void ofApp::update()
@@ -41,46 +48,48 @@ void ofApp::update()
 void ofApp::draw()
 {
   _gui.Begin();
-  if (_gui.BeginWindow(bGui))
-	{
-		_gui.AddLabelBig("Examples/\n01_\nWidgetsBasic");
-		_gui.AddSpacingBig();
+  if (_gui.BeginWindow(_showPreferences))
+  {
+    _gui.AddLabelBig("Examples/\n01_\nWidgetsBasic");
+    _gui.AddSpacingBig();
 
-		_gui.AddMinimizerToggle();
-		_gui.AddTooltip("This internal toggle is very useful \nconditioning hiding some stuff \nto simplify our gui layout.");
-		if (_gui.isMaximized()) {
-			_gui.AddAutoResizeToggle();
-			_gui.Add(_gui.bGui_Aligners, OFX_IM_TOGGLE_ROUNDED_MINI);
-		}
+    _gui.AddMinimizerToggle();
+    _gui.AddTooltip("This internal toggle is very useful \nconditioning hiding some stuff \nto simplify our gui layout.");
+    if (_gui.isMaximized())
+    {
+      _gui.AddAutoResizeToggle();
+      _gui.Add(_gui.bGui_Aligners, OFX_IM_TOGGLE_ROUNDED_MINI);
+    }
 
-		_gui.AddSpacingSeparated();
+    _gui.AddSpacingSeparated();
 
-		_gui.AddLabelBig("> Show \nWindows", true, true);
-		_gui.AddSpacing();
+    _gui.AddLabelBig("> Show \nWindows", true, true);
+    _gui.AddSpacing();
 
-		// _gui.Add(bGui_1, OFX_IM_TOGGLE_ROUNDED_BIG);
-		// _gui.AddTooltip("Some widgets");
+    // _gui.Add(bGui_1, OFX_IM_TOGGLE_ROUNDED_BIG);
+    // _gui.AddTooltip("Some widgets");
 
-		// _gui.Add(bGui_2, OFX_IM_TOGGLE_ROUNDED_BIG);
-		// _gui.AddTooltip("Some ImGui Raw");
+    // _gui.Add(bGui_2, OFX_IM_TOGGLE_ROUNDED_BIG);
+    // _gui.AddTooltip("Some ImGui Raw");
 
-		// _gui.Add(bGui_3, OFX_IM_TOGGLE_ROUNDED_BIG);
-		// _gui.AddTooltip("H & V Sliders");
+    // _gui.Add(bGui_3, OFX_IM_TOGGLE_ROUNDED_BIG);
+    // _gui.AddTooltip("H & V Sliders");
 
-		// _gui.Add(bGui_4, OFX_IM_TOGGLE_ROUNDED_BIG);
-		// _gui.AddTooltip("Sliders & Knobs");
-		
-		//--
+    // _gui.Add(bGui_4, OFX_IM_TOGGLE_ROUNDED_BIG);
+    // _gui.AddTooltip("Sliders & Knobs");
 
-		if (_gui.isMaximized()) {
+    //--
 
-			// An useful bundle of internal control/settings
-			_gui.AddSpacingSeparated();
-			_gui.DrawAdvancedBundle();
-		}
+    if (_gui.isMaximized())
+    {
 
-		_gui.EndWindow();
-	}
+      // An useful bundle of internal control/settings
+      _gui.AddSpacingSeparated();
+      _gui.DrawAdvancedBundle();
+    }
+
+    _gui.EndWindow();
+  }
   _gui.End();
 }
 
@@ -170,3 +179,22 @@ void ofApp::onMessage(ofxMQTTMessage &msg)
     // send out midi cc based on results
   }
 }
+
+void ofApp::touchDown(ofTouchEventArgs & touch) {
+	ofLogNotice("ofApp::touchDown") << " cursor added: " + ofToString(touch.id) +
+		" X: " + ofToString(touch.x) +
+		" Y: " + ofToString(touch.y);
+}
+
+void ofApp::touchUp(ofTouchEventArgs & touch) {
+	ofLogNotice("ofApp::touchUp") << " cursor removed: " + ofToString(touch.id) +
+		" X: " + ofToString(touch.x) +
+		" Y: " + ofToString(touch.y);
+}
+
+void ofApp::touchMoved(ofTouchEventArgs & touch) {
+	ofLogNotice("ofApp::touchMoved") << " cursor updated: " + ofToString(touch.id) +
+		" X: " + ofToString(touch.x) +
+		" Y: " + ofToString(touch.y);
+}
+

@@ -5,3 +5,4 @@ local_addons/ofxMidi#https://github.com/danomatika/ofxMidi.git@1f33f64aa4a3ebc72
 local_addons/ofxImGui#https://github.com/Daandelange/ofxImGui.git@16b921e8f8add2aeaf088b6e51a280ec9c85e776
 local_addons/ofxSurfingImGui#https://github.com/moebiussurfing/ofxSurfingImGui.git@4c71133e80a27d7648ea6201fcf6ea9dd3495698
 
+local_addons/ofxTuioWrapper#https://github.com/arturoc/ofxTuioWrapper.git@63ab4f58f735719614841bb8215aacc535cac938

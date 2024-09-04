@@ -4,6 +4,7 @@
 #include "ofxMQTT.h"
 #include "ofxDmx.h"
 #include "ofxMidi.h"
+#include "ofxTuioClient.h"
 #include "ofxSurfingImGui.h"
 
 
@@ -32,15 +33,21 @@ public:
     void onMessage(ofxMQTTMessage &msg);
 
 
+
+    void touchDown(ofTouchEventArgs & touch);
+    void touchUp(ofTouchEventArgs & touch);
+    void touchMoved(ofTouchEventArgs & touch);
+
     ofxMQTT _mqttClient;
     ofxDmx _dmx;
     ofxMidiOut _midiOut;
+    ofxTuioClient _tuio;
 
     ofJson _config;
     std::string _showId;
     std::string _showBaseTopic;
 
     ofxSurfingGui _gui;
-    ofParameter<bool> bGui;
+    ofParameter<bool> _showPreferences;
 
 };

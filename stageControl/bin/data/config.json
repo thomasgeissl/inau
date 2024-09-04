@@ -1,5 +1,6 @@
 {
     "showId": "1",
     "broker": "localhost",
-    "brokerPort": 1883
+    "brokerPort": 1883,
+    "tuioPort": 3333
 }
